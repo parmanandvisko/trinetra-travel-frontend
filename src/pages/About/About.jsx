@@ -55,7 +55,7 @@ export default function About() {
               <p className="text-gold text-3xl mb-2" style={{ fontFamily: "'Dancing Script', cursive" }}>Who We Are</p>
               <h2 className="text-3xl font-bold text-gray-900 mb-5">Crafting Journeys That Last a Lifetime</h2>
               <p className="text-gray-500 leading-relaxed mb-4">
-                WanderNest Tours & Travels was born from a passion for exploration. Founded in 2009, we have been
+                Trinetra Tours & Travels was born from a passion for exploration. Founded in 2009, we have been
                 helping families, couples, and solo travelers discover the world's most beautiful destinations.
               </p>
               <p className="text-gray-500 leading-relaxed mb-8">
@@ -123,7 +123,7 @@ export default function About() {
       {/* CTA */}
       <section className="py-14 bg-primary text-white text-center">
         <p className="text-3xl mb-2" style={{ fontFamily: "'Dancing Script', cursive" }}>Ready to explore?</p>
-        <h2 className="text-2xl font-bold mb-6">Start Your Journey with WanderNest</h2>
+        <h2 className="text-2xl font-bold mb-6">Start Your Journey with Trinetra Global Holidays</h2>
         <Link to="/booking" className="inline-flex items-center gap-2 bg-white text-primary font-semibold px-8 py-3 rounded-full hover:bg-gray-100 transition-colors">
           Plan My Trip <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
         </Link>

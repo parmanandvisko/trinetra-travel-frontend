@@ -2,12 +2,13 @@ import { useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import api from '../../services/api'
 import PageHero from '../../components/ui/PageHero'
 import PageWrapper from '../../components/ui/PageWrapper'
 
 const contactInfo = [
   { icon: '📞', title: 'Call Us', value: '+91 98765 43210', sub: 'Mon–Sat, 9am–7pm' },
-  { icon: '✉️', title: 'Email Us', value: 'info@wandernest.com', sub: 'We reply within 24 hours' },
+  { icon: '✉️', title: 'Email Us', value: 'info@trinetra.com', sub: 'We reply within 24 hours' },
   { icon: '📍', title: 'Visit Us', value: '123, Travel Street', sub: 'Mumbai, India 400001' },
 ]
 
@@ -15,6 +16,8 @@ export default function Contact() {
   const formRef = useRef(null)
   const infoRef = useRef(null)
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' })
+  const [submitting, setSubmitting] = useState(false)
+  const [sent, setSent] = useState(false)
 
   useGSAP(() => {
     gsap.from('.ci-card', { y: 50, opacity: 0, stagger: 0.13, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: infoRef.current, start: 'top 80%', toggleActions: 'play none none none' } })
@@ -26,6 +29,21 @@ export default function Contact() {
   }, { scope: formRef })
 
   const handle = (e) => setForm({ ...form, [e.target.name]: e.target.value })
+
+  const submit = async (e) => {
+    e.preventDefault()
+    if (!form.name || !form.email || !form.message) return
+    setSubmitting(true)
+    try {
+      await api.post('/contacts', form)
+      setSent(true)
+      setForm({ name: '', email: '', phone: '', subject: '', message: '' })
+    } catch {
+      alert('Failed to send message. Please try again.')
+    } finally {
+      setSubmitting(false)
+    }
+  }
 
   return (
     <PageWrapper>
@@ -55,33 +73,45 @@ export default function Contact() {
             <div className="form-left bg-white rounded-3xl shadow-md p-8">
               <p className="text-gold text-2xl mb-1" style={{ fontFamily: "'Dancing Script', cursive" }}>Send a Message</p>
               <h2 className="text-2xl font-bold text-gray-900 mb-6">We'd Love to Hear From You</h2>
-              <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Full Name</label>
-                    <input name="name" value={form.name} onChange={handle} placeholder="John Doe" className="mt-1.5 w-full border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-primary" />
+
+              {sent ? (
+                <div className="text-center py-12">
+                  <div className="text-5xl mb-4">✅</div>
+                  <h3 className="font-bold text-gray-900 text-lg mb-2">Message Sent!</h3>
+                  <p className="text-gray-500 text-sm mb-6">Thank you for reaching out. We'll get back to you within 24 hours.</p>
+                  <button onClick={() => setSent(false)} className="bg-primary text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-primary-dark transition-colors">
+                    Send Another Message
+                  </button>
+                </div>
+              ) : (
+                <form className="space-y-4" onSubmit={submit}>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Full Name *</label>
+                      <input name="name" value={form.name} onChange={handle} placeholder="John Doe" required className="mt-1.5 w-full border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-primary" />
+                    </div>
+                    <div>
+                      <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Phone</label>
+                      <input name="phone" value={form.phone} onChange={handle} placeholder="+91 00000 00000" className="mt-1.5 w-full border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-primary" />
+                    </div>
                   </div>
                   <div>
-                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Phone</label>
-                    <input name="phone" value={form.phone} onChange={handle} placeholder="+91 00000 00000" className="mt-1.5 w-full border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-primary" />
+                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Email *</label>
+                    <input name="email" type="email" value={form.email} onChange={handle} placeholder="john@example.com" required className="mt-1.5 w-full border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-primary" />
                   </div>
-                </div>
-                <div>
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Email</label>
-                  <input name="email" type="email" value={form.email} onChange={handle} placeholder="john@example.com" className="mt-1.5 w-full border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-primary" />
-                </div>
-                <div>
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Subject</label>
-                  <input name="subject" value={form.subject} onChange={handle} placeholder="Tour inquiry..." className="mt-1.5 w-full border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-primary" />
-                </div>
-                <div>
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Message</label>
-                  <textarea name="message" value={form.message} onChange={handle} rows={5} placeholder="Tell us about your travel plans..." className="mt-1.5 w-full border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-primary resize-none" />
-                </div>
-                <button type="submit" className="w-full bg-primary text-white font-semibold py-3.5 rounded-xl hover:bg-primary-dark transition-colors text-sm">
-                  Send Message →
-                </button>
-              </form>
+                  <div>
+                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Subject</label>
+                    <input name="subject" value={form.subject} onChange={handle} placeholder="Tour inquiry..." className="mt-1.5 w-full border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-primary" />
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Message *</label>
+                    <textarea name="message" value={form.message} onChange={handle} rows={5} placeholder="Tell us about your travel plans..." required className="mt-1.5 w-full border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-primary resize-none" />
+                  </div>
+                  <button type="submit" disabled={submitting} className="w-full bg-primary text-white font-semibold py-3.5 rounded-xl hover:bg-primary-dark transition-colors text-sm disabled:opacity-70">
+                    {submitting ? 'Sending...' : 'Send Message →'}
+                  </button>
+                </form>
+              )}
             </div>
 
             {/* Map Placeholder */}

@@ -14,7 +14,7 @@ export default function Home() {
       <WelcomeSection />
       <PopularAdventures />
       <Testimonials />
-      <BlogSection />
+      {/* <BlogSection /> */}
       <CTABanner />
     </>
   )

@@ -10,19 +10,21 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand */}
           <div className="lg:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
+            {/* <div className="flex items-center gap-2 mb-4">
               <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center shrink-0">
                 <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M21 16v-2l-8-5V3.5A1.5 1.5 0 0 0 11.5 2 1.5 1.5 0 0 0 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z" />
                 </svg>
               </div>
               <div>
-                <p className="font-bold text-white text-base leading-tight">WanderNest</p>
+                <p className="font-bold text-white text-base leading-tight">Trinetra</p>
                 <p className="text-[10px] text-gray-400 leading-tight">Explore More, Worry Less.</p>
               </div>
-            </div>
+            </div> */}
+
+            <img src="/images/logo/trinetralogo.png" alt="trinetra" style={{width:"120px",height:"150px", objectFit:"contain"}} />
             <p className="text-sm text-gray-400 leading-relaxed mb-5">
-              WanderNest Tours & Travels is your trusted partner for unforgettable journeys. We offer the best travel
+              Trinetra Tours & Travels is your trusted partner for unforgettable journeys. We offer the best travel
               experiences with comfort and care.
             </p>
             <div className="flex items-center gap-3">
@@ -111,7 +113,7 @@ export default function Footer() {
                 <svg className="w-4 h-4 text-gold mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <span className="text-sm text-gray-400">info@wandernest.com</span>
+                <span className="text-sm text-gray-400">info@trinetra.com</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-4 h-4 text-gold mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -129,7 +131,7 @@ export default function Footer() {
       <div className="border-t border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <p className="text-center text-xs text-gray-500">
-            © 2025 WanderNest Tours & Travels. All Rights Reserved.
+            © 2025 Trinetra Tours & Travels. All Rights Reserved.
           </p>
         </div>
       </div>

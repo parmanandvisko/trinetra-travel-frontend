@@ -1,18 +1,26 @@
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchFeaturedDestinations } from '../../store/slices/destinationsSlice'
 
-const destinations = [
-  { id: 1, name: 'Passionate-Paris', subtitle: 'France', image: 'https://images.unsplash.com/photo-1499856871958-5b9357976b82?w=500&auto=format&fit=crop' },
-  { id: 2, name: 'Netherlands', subtitle: 'Amsterdam', image: 'https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?w=500&auto=format&fit=crop' },
-  { id: 3, name: 'Himachal', subtitle: 'India', image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=500&auto=format&fit=crop' },
-  { id: 4, name: 'Australia', subtitle: 'Sydney', image: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=500&auto=format&fit=crop' },
+const FALLBACK = [
+  { _id: '1', name: 'Passionate-Paris', subtitle: 'France', image: 'https://images.unsplash.com/photo-1778159242389-00f28329cc16?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?w=500&auto=format&fit=crop' },
+  { _id: '2', name: 'Netherlands', subtitle: 'Amsterdam', image: 'https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?w=500&auto=format&fit=crop' },
+  { _id: '3', name: 'Himachal', subtitle: 'India', image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=500&auto=format&fit=crop' },
+  { _id: '4', name: 'Australia', subtitle: 'Sydney', image: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=500&auto=format&fit=crop' },
 ]
 
 export default function TourDestinations() {
   const container = useRef(null)
+  const dispatch = useDispatch()
+  const { featured, loading } = useSelector((s) => s.destinations)
+
+  useEffect(() => { dispatch(fetchFeaturedDestinations()) }, [dispatch])
+
+  const destinations = featured.length > 0 ? featured : FALLBACK
 
   useGSAP(() => {
     gsap.from('.td-label', {
@@ -56,20 +64,24 @@ export default function TourDestinations() {
 
         {/* Destination Cards */}
         <div className="td-grid grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          {destinations.map((dest) => (
-            <Link
-              key={dest.id}
-              to={`/destinations`}
-              className="td-card relative rounded-2xl overflow-hidden group cursor-pointer h-48 md:h-56"
-            >
-              <img src={dest.image} alt={dest.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-              <div className="absolute inset-0 gradient-overlay" />
-              <div className="absolute bottom-0 left-0 p-4">
-                <h3 className="text-white font-bold text-base">{dest.name}</h3>
-                <p className="text-gray-300 text-xs">{dest.subtitle}</p>
-              </div>
-            </Link>
-          ))}
+          {loading && destinations === FALLBACK ? (
+            [1,2,3,4].map((i) => <div key={i} className="td-card rounded-2xl bg-gray-100 h-48 md:h-56 animate-pulse" />)
+          ) : (
+            destinations.map((dest) => (
+              <Link
+                key={dest._id}
+                to="/destinations"
+                className="td-card relative rounded-2xl overflow-hidden group cursor-pointer h-48 md:h-56"
+              >
+                <img src={dest.image} alt={dest.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                <div className="absolute inset-0 gradient-overlay" />
+                <div className="absolute bottom-0 left-0 p-4">
+                  <h3 className="text-white font-bold text-base">{dest.name}</h3>
+                  <p className="text-gray-300 text-xs">{dest.subtitle || dest.country}</p>
+                </div>
+              </Link>
+            ))
+          )}
         </div>
 
         {/* Promo Banners */}

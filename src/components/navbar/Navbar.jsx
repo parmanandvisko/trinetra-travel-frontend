@@ -5,16 +5,16 @@ import gsap from 'gsap'
 
 const navLinks = [
   { label: 'Home', to: '/' },
-  {
-    label: 'Services',
-    to: '#',
-    hasDropdown: true,
-    dropdown: [
-      { label: 'Holiday Packages', to: '/destinations' },
-      { label: 'Flight Bookings', to: '/booking' },
-      { label: 'Travel Insurance', to: '/contact' },
-    ],
-  },
+  // {
+  //   label: 'Services',
+  //   to: '#',
+  //   hasDropdown: true,
+  //   dropdown: [
+  //     { label: 'Holiday Packages', to: '/destinations' },
+  //     { label: 'Flight Bookings', to: '/booking' },
+  //     { label: 'Travel Insurance', to: '/contact' },
+  //   ],
+  // },
   { label: 'About Us', to: '/about' },
   { label: 'Destinations', to: '/destinations' },
   { label: 'Contact Us', to: '/contact' },
@@ -45,22 +45,24 @@ export default function Navbar() {
   return (
     <header ref={container} className="bg-white shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-28">
           {/* Logo */}
-          <Link to="/" className="nav-link flex items-center gap-2 shrink-0">
-            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+          <Link to="/" className="nav-link flex items-center gap-2 shrink-0 " style={{marginTop:"47px"}}>
+            <img src="/images/logo/trinetralogo.png" alt="trinetra" className="h-48 w-auto object-contain" />
+
+            {/* <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
               <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M21 16v-2l-8-5V3.5A1.5 1.5 0 0 0 11.5 2 1.5 1.5 0 0 0 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z" />
               </svg>
-            </div>
-            <div>
-              <p className="font-bold text-gray-900 text-base leading-tight">WanderNest</p>
-              <p className="text-[10px] text-gray-500 leading-tight">Explore More, Worry Less.</p>
-            </div>
+            </div> */}
+            {/* <div>
+              <p className="font-bold text-gray-900 text-base leading-tight">Trinetra</p>
+              <p className="text-[10px] text-gray-500 leading-tight">Global Holidays</p>
+            </div> */}
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-7">
+          <nav className="hidden md:flex items-center gap-7 ml-auto mr-6">
             {navLinks.map((link) => (
               <div
                 key={link.label}
@@ -111,15 +113,15 @@ export default function Navbar() {
           </nav>
 
           {/* CTA */}
-          <Link
+          {/* <Link
             to="/booking"
-            className="nav-link hidden md:inline-flex items-center gap-2 bg-primary text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-primary-dark transition-colors"
+            className="nav-link hidden md:inline-flex items-center gap-2 bg-primary text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-primary-dark transition-colors shrink-0"
           >
             Plan My Trip
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
-          </Link>
+          </Link> */}
 
           {/* Mobile Hamburger */}
           <button

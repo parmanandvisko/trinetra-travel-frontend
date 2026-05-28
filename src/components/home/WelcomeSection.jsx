@@ -35,7 +35,7 @@ export default function WelcomeSection() {
               Trusted Experts in Family Tours &amp; Temple Yatras
             </h2>
             <p className="text-gray-500 leading-relaxed mb-8 max-w-lg">
-              We at WanderNest Tour and Travels craft tours with care — whether it's family trips, temple journeys, or
+              We at Trinetra Tour and Travels craft tours with care — whether it's family trips, temple journeys, or
               adventure getaways. Explore new places with comfort and trust.
             </p>
 

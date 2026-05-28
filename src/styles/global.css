@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    color: #1a1a1a;
+  }
+}
+
+@layer utilities {
+  .font-script {
+    font-family: 'Dancing Script', cursive;
+  }
+
+  .gradient-overlay {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, transparent 60%);
+  }
+
+  .hero-overlay {
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.45) 0%,
+      rgba(0, 0, 0, 0.35) 60%,
+      rgba(0, 0, 0, 0.55) 100%
+    );
+  }
+}

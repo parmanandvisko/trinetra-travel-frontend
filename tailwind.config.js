@@ -14,6 +14,7 @@ export default {
       fontFamily: {
         script: ['Dancing Script', 'cursive'],
         sans: ['Inter', 'sans-serif'],
+        heading: ['Poppins', 'sans-serif'],
       },
     },
   },

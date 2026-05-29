@@ -5,10 +5,11 @@ export const fetchFeaturedDestinations = createAsyncThunk(
   'destinations/fetchFeatured',
   async (_, { rejectWithValue }) => {
     try {
-      const res = await api.get('/destinations?limit=4&isFeature=true')
-      return res.data.data
-    } catch {
-      return rejectWithValue('Failed to load destinations')
+      const res = await api.get('/destinations?isFeature=true&limit=8')
+      return res.data.data || []
+    } catch (err) {
+      console.error('fetchFeaturedDestinations error:', err.message)
+      return rejectWithValue(err.message)
     }
   }
 )
@@ -18,9 +19,10 @@ export const fetchAllDestinations = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const res = await api.get('/destinations?limit=50')
-      return res.data.data
-    } catch {
-      return rejectWithValue('Failed to load destinations')
+      return res.data.data || []
+    } catch (err) {
+      console.error('fetchAllDestinations error:', err.message)
+      return rejectWithValue(err.message)
     }
   }
 )

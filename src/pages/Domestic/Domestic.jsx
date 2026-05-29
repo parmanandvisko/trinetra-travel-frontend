@@ -12,7 +12,7 @@ export default function Domestic() {
   const [active, setActive] = useState('All')
   const gridRef = useRef(null)
   const dispatch = useDispatch()
-  const { domestic: packages, loading } = useSelector((s) => s.packages)
+  const { domestic: packages, loading, error } = useSelector((s) => s.packages)
 
   useEffect(() => { dispatch(fetchDomesticPackages()) }, [dispatch])
 
@@ -53,6 +53,12 @@ export default function Domestic() {
           <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {loading ? (
               [1,2,3,4,5,6,7,8].map((i) => <div key={i} className="pkg-card rounded-2xl bg-gray-100 h-72 animate-pulse" />)
+            ) : error ? (
+              <div className="col-span-4 text-center py-20">
+                <p className="text-red-400 text-sm mb-2">Could not connect to server</p>
+                <p className="text-gray-400 text-xs">Make sure the backend is running on port 5000</p>
+                <button onClick={() => dispatch(fetchDomesticPackages())} className="mt-4 px-5 py-2 bg-primary text-white text-sm rounded-full hover:bg-primary-dark">Retry</button>
+              </div>
             ) : filtered.length === 0 ? (
               <div className="col-span-4 text-center py-20 text-gray-400">No packages found</div>
             ) : (

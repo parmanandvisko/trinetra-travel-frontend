@@ -4,6 +4,8 @@ import gsap from 'gsap'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchAllPackages } from '../../store/slices/packagesSlice'
 import api from '../../services/api'
+import { openWhatsApp, bookingConfirmMsg } from '../../utils/whatsapp'
+import WaIcon from '../../components/ui/WaIcon'
 import PageHero from '../../components/ui/PageHero'
 import PageWrapper from '../../components/ui/PageWrapper'
 
@@ -46,12 +48,12 @@ export default function Booking() {
         notes: form.notes,
         totalAmount: selectedPkg.price * Number(form.adults),
       })
-      setDone(true)
     } catch {
-      alert('Booking failed. Please try again.')
-    } finally {
-      setSubmitting(false)
+      // proceed even if API fails, WhatsApp will still open
     }
+    openWhatsApp(bookingConfirmMsg(selectedPkg, form))
+    setDone(true)
+    setSubmitting(false)
   }
 
   if (done) {
@@ -204,8 +206,9 @@ export default function Booking() {
                 </div>
                 <div className="flex gap-4">
                   <button onClick={() => setStep(1)} className="flex-1 border-2 border-gray-200 text-gray-600 font-semibold py-3 rounded-full hover:border-primary hover:text-primary transition-colors">← Back</button>
-                  <button onClick={confirm} disabled={submitting} className="flex-1 bg-primary text-white font-semibold py-3 rounded-full hover:bg-primary-dark transition-colors disabled:opacity-70">
-                    {submitting ? 'Confirming...' : 'Confirm Booking ✓'}
+                  <button onClick={confirm} disabled={submitting} className="flex-1 bg-green-500 text-white font-semibold py-3 rounded-full hover:bg-green-600 transition-colors disabled:opacity-70 flex items-center justify-center gap-2">
+                    <WaIcon className="w-4 h-4" />
+                    {submitting ? 'Sending...' : 'Confirm on WhatsApp'}
                   </button>
                 </div>
               </div>

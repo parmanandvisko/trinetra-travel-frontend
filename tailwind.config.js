@@ -5,11 +5,11 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#8B1A1A',
-          light: '#A52424',
-          dark: '#6B1212',
+          DEFAULT: 'rgb(var(--color-primary) / <alpha-value>)',
+          light: 'rgb(var(--color-primary-light) / <alpha-value>)',
+          dark: 'rgb(var(--color-primary-dark) / <alpha-value>)',
         },
-        gold: '#D4A017',
+        gold: 'rgb(var(--color-gold) / <alpha-value>)',
       },
       fontFamily: {
         script: ['Dancing Script', 'cursive'],

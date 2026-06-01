@@ -48,14 +48,14 @@ export default function Navbar() {
 
   return (
     <header ref={container} className="bg-white shadow-sm sticky top-0 z-50">
-      <div className="w-full" style={{ paddingLeft: '20px', paddingRight: '24px' }}>
-        <div className="flex items-center justify-between h-28">
+      <div className="w-full px-5">
+        <div className="flex items-center justify-between h-16 md:h-20 lg:h-28">
           {/* Logo */}
           <Link to="/" className="flex items-center shrink-0">
             <img
               src="/images/logo/trinetralogo.png"
               alt="Trinetra"
-              className="h-24 w-auto object-contain select-none"
+              className="h-10 md:h-16 lg:h-24 w-auto object-contain select-none"
               loading="eager"
             />
           </Link>

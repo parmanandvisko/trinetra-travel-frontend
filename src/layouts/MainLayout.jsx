@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import Navbar from '../components/navbar/Navbar'
 import Footer from '../components/footer/Footer'
+import WhatsAppFloat from '../components/ui/WhatsAppFloat'
 
 export default function MainLayout() {
   return (
@@ -9,7 +10,8 @@ export default function MainLayout() {
       <main className="flex-1">
         <Outlet />
       </main>
-      <Footer />
+      <Footer /> 
+      <WhatsAppFloat />
     </div>
   )
 }

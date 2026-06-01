@@ -5,6 +5,8 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchFeaturedPackages } from '../../store/slices/packagesSlice'
+import { openWhatsApp, packageInquiryMsg } from "../../utils/whatsapp"
+import WaIcon from "../../components/ui/WaIcon"
 
 const FALLBACK = [
   { _id: '1', title: 'Bali Tour Packages', duration: '5 Days / 4 Nights', description: 'Explore the beauty of Bali with beaches, temples, and culture.', price: 750, originalPrice: 990, rating: 4.8, image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=500&auto=format&fit=crop' },
@@ -75,10 +77,10 @@ export default function PopularAdventures() {
                       <span className="text-gray-400 text-xs"> /person</span>
                       {pkg.originalPrice && <p className="text-gray-400 text-xs line-through">${pkg.originalPrice}</p>}
                     </div>
-                    <Link to="/booking" className="flex items-center gap-1.5 bg-primary text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-primary-dark transition-colors">
+                    <button onClick={() => openWhatsApp(packageInquiryMsg(pkg))} className="flex items-center gap-1.5 bg-green-500 text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-green-600 transition-colors">
+                      <WaIcon className="w-3.5 h-3.5" />
                       Book Now
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-                    </Link>
+                    </button>
                   </div>
                 </div>
               </div>

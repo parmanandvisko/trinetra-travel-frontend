@@ -5,6 +5,8 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchInternationalPackages } from '../../store/slices/packagesSlice'
+import { openWhatsApp, packageInquiryMsg } from '../../utils/whatsapp'
+import WaIcon from '../../components/ui/WaIcon'
 import PageHero from '../../components/ui/PageHero'
 import PageWrapper from '../../components/ui/PageWrapper'
 
@@ -81,9 +83,9 @@ export default function International() {
                         <span className="text-gray-400 text-xs"> /person</span>
                         {pkg.originalPrice && <p className="text-gray-400 text-xs line-through">${pkg.originalPrice}</p>}
                       </div>
-                      <Link to="/booking" className="flex items-center gap-1 bg-primary text-white text-xs font-semibold px-3 py-2 rounded-full hover:bg-primary-dark transition-colors">
-                        Book Now <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-                      </Link>
+                      <button onClick={() => openWhatsApp(packageInquiryMsg(pkg))} className="flex items-center gap-1.5 bg-green-500 text-white text-xs font-semibold px-3 py-2 rounded-full hover:bg-green-600 transition-colors">
+                        <WaIcon className="w-3.5 h-3.5" /> Book Now
+                      </button>
                     </div>
                   </div>
                 </div>

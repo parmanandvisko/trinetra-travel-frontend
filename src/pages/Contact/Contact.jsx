@@ -3,6 +3,8 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import api from '../../services/api'
+import { openWhatsApp, contactInquiryMsg } from '../../utils/whatsapp'
+import WaIcon from '../../components/ui/WaIcon'
 import PageHero from '../../components/ui/PageHero'
 import PageWrapper from '../../components/ui/PageWrapper'
 
@@ -36,13 +38,13 @@ export default function Contact() {
     setSubmitting(true)
     try {
       await api.post('/contacts', form)
-      setSent(true)
-      setForm({ name: '', email: '', phone: '', subject: '', message: '' })
     } catch {
-      alert('Failed to send message. Please try again.')
-    } finally {
-      setSubmitting(false)
+      // proceed even if API fails
     }
+    openWhatsApp(contactInquiryMsg(form))
+    setSent(true)
+    setForm({ name: '', email: '', phone: '', subject: '', message: '' })
+    setSubmitting(false)
   }
 
   return (
@@ -107,8 +109,9 @@ export default function Contact() {
                     <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Message *</label>
                     <textarea name="message" value={form.message} onChange={handle} rows={5} placeholder="Tell us about your travel plans..." required className="mt-1.5 w-full border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-primary resize-none" />
                   </div>
-                  <button type="submit" disabled={submitting} className="w-full bg-primary text-white font-semibold py-3.5 rounded-xl hover:bg-primary-dark transition-colors text-sm disabled:opacity-70">
-                    {submitting ? 'Sending...' : 'Send Message →'}
+                  <button type="submit" disabled={submitting} className="w-full bg-green-500 text-white font-semibold py-3.5 rounded-xl hover:bg-green-600 transition-colors text-sm disabled:opacity-70 flex items-center justify-center gap-2">
+                    <WaIcon className="w-4 h-4" />
+                    {submitting ? 'Sending...' : 'Send via WhatsApp'}
                   </button>
                 </form>
               )}

@@ -100,7 +100,7 @@ export default function About() {
       </section>
 
       {/* Team */}
-      <section ref={teamRef} className="py-16 bg-white">
+      {/* <section ref={teamRef} className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <p className="text-gold font-semibold text-sm mb-1" style={{ fontFamily: "'Dancing Script', cursive" }}>The People</p>
@@ -118,7 +118,7 @@ export default function About() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA */}
       <section className="py-14 bg-primary text-white text-center">

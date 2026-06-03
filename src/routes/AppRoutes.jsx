@@ -11,6 +11,11 @@ import Domestic from '../pages/Domestic/Domestic'
 import International from '../pages/International/International'
 import Booking from '../pages/Booking/Booking'
 import Auth from '../pages/Auth/Auth'
+import BlogDetail from '../pages/Blogs/BlogDetail'
+import FAQ from '../pages/Support/FAQ'
+import Terms from '../pages/Support/Terms'
+import Privacy from '../pages/Support/Privacy'
+import Refund from '../pages/Support/Refund'
 
 export default function AppRoutes() {
   return (
@@ -26,7 +31,12 @@ export default function AppRoutes() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/blogs" element={<Blogs />} />
-          <Route path="/blogs/:id" element={<Blogs />} />
+          <Route path="/blogs/:id" element={<BlogDetail />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/refund" element={<Refund />} />
+          <Route path="/travel-insurance" element={<Contact />} />
           <Route path="/destinations" element={<Destinations />} />
           <Route path="/destinations/domestic" element={<Domestic />} />
           <Route path="/destinations/international" element={<International />} />

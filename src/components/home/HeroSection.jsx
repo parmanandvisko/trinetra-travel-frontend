@@ -1,7 +1,8 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
+import { useSelector } from 'react-redux'
 import api from '../../services/api'
 
 function useDebounce(value, delay) {
@@ -17,6 +18,7 @@ export default function HeroSection() {
   const container = useRef(null)
   const dropdownRef = useRef(null)
   const navigate = useNavigate()
+  const s = useSelector((st) => st.settings.data)
 
   const [query, setQuery] = useState('')
   const [checkIn, setCheckIn] = useState('')
@@ -83,7 +85,7 @@ export default function HeroSection() {
       ref={container}
       className="relative min-h-[88vh] flex flex-col items-center justify-center text-white overflow-hidden"
       style={{
-        backgroundImage: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&auto=format&fit=crop)',
+        backgroundImage: `url(${s.heroBg || 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&auto=format&fit=crop'})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
@@ -106,10 +108,10 @@ export default function HeroSection() {
       {/* Heading */}
       <div className="relative z-10 text-center px-4 mb-8 md:mb-10">
         <p className="hero-label text-gold text-2xl md:text-4xl mb-3" style={{ fontFamily: "'Dancing Script', cursive" }}>
-          One life. Many destinations
+          {s.heroSubtitle}
         </p>
         <h1 className="hero-title text-3xl md:text-6xl font-bold text-white drop-shadow-lg leading-tight">
-          Where Would You Like To Go?
+          {s.heroTitle}
         </h1>
       </div>
 

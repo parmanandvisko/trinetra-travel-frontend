@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchTheme, applyTheme } from './store/slices/themeSlice'
+import { fetchSettings } from './store/slices/settingsSlice'
 import AppRoutes from './routes/AppRoutes'
 
 function App() {
@@ -16,7 +17,8 @@ function App() {
   // Fetch from backend and apply if different
   useEffect(() => {
     dispatch(fetchTheme())
-    const interval = setInterval(() => dispatch(fetchTheme()), 10000)
+    dispatch(fetchSettings())
+    const interval = setInterval(() => { dispatch(fetchTheme()); dispatch(fetchSettings()) }, 5000)
     return () => clearInterval(interval)
   }, [dispatch])
 

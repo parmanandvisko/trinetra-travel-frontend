@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useSelector } from 'react-redux'
 
 const testimonials = [
   { id: 1, name: 'Andre Patil', location: 'Mumbai, India', rating: 5, text: '"The team planned our vacation perfectly! From smooth bookings to amazing experiences, everything was well-organized. Highly recommended for anyone looking for a stress-free trip."', avatar: 'https://picsum.photos/seed/user1/60/60' },
@@ -9,6 +10,8 @@ const testimonials = [
 
 export default function Testimonials() {
   const container = useRef(null)
+  const s = useSelector((st) => st.settings.data)
+  const items = s.customerTestimonials?.length > 0 ? s.customerTestimonials : testimonials
 
   useGSAP(() => {
     gsap.from('.tm-left', {
@@ -34,8 +37,8 @@ export default function Testimonials() {
             <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=700&auto=format&fit=crop" alt="Destination" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-black/30" />
             <div className="absolute bottom-6 right-6 bg-primary rounded-2xl p-5 text-white text-center shadow-xl">
-              <p className="text-4xl font-extrabold leading-none">15+</p>
-              <p className="text-xs font-semibold mt-1 opacity-90">Years of Trust</p>
+              <p className="text-4xl font-extrabold leading-none">{s.happyTravelers || '50+'}</p>
+              <p className="text-xs font-semibold mt-1 opacity-90">Happy Travelers</p>
             </div>
           </div>
 
@@ -55,10 +58,10 @@ export default function Testimonials() {
                   <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
                 </svg>
               </div>
-              {testimonials.map((t) => (
-                <div key={t.id}>
+              {items.map((t, i) => (
+                <div key={t.id || i}>
                   <div className="flex items-center gap-4 mb-4">
-                    <img src={t.avatar} alt={t.name} className="w-12 h-12 rounded-full object-cover border-2 border-gold" />
+                    <img src={t.avatar || t.img} alt={t.name} className="w-12 h-12 rounded-full object-cover border-2 border-gold" />
                     <div>
                       <p className="font-semibold text-gray-900 text-sm">{t.name}</p>
                       <p className="text-xs text-gray-400">{t.location}</p>

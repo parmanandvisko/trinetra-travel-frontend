@@ -5,6 +5,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchFeaturedDestinations } from '../../store/slices/destinationsSlice'
+import { imageUrl, handleImageError } from '../../utils/image'
 
 const FALLBACK = [
   { _id: '1', name: 'Passionate-Paris', subtitle: 'France', image: 'https://images.unsplash.com/photo-1778159242389-00f28329cc16?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?w=500&auto=format&fit=crop' },
@@ -73,7 +74,7 @@ export default function TourDestinations() {
                 to="/destinations"
                 className="td-card relative rounded-2xl overflow-hidden group cursor-pointer h-48 md:h-56"
               >
-                <img src={dest.image} alt={dest.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                <img src={imageUrl(dest.image)} onError={handleImageError} alt={dest.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                 <div className="absolute inset-0 gradient-overlay" />
                 <div className="absolute bottom-0 left-0 p-4">
                   <h3 className="text-white font-bold text-base">{dest.name}</h3>

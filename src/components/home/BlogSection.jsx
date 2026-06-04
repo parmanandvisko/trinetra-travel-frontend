@@ -56,7 +56,7 @@ export default function BlogSection() {
             blogs.map((blog) => (
               <div key={blog._id} className="bs-card bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
                 <div className="h-44 overflow-hidden">
-                  <img src={blog.image} alt={blog.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <img src={blog.image || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=500&auto=format&fit=crop'} alt={blog.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                 </div>
                 <div className="p-4">
                   <div className="flex items-center gap-3 mb-3">

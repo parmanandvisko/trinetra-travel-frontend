@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchAllPackages } from '../../store/slices/packagesSlice'
 import api from '../../services/api'
 import { openWhatsApp, bookingConfirmMsg } from '../../utils/whatsapp'
+import { imageUrl, handleImageError } from '../../utils/image'
 import WaIcon from '../../components/ui/WaIcon'
 import PageHero from '../../components/ui/PageHero'
 import PageWrapper from '../../components/ui/PageWrapper'
@@ -116,7 +117,7 @@ export default function Booking() {
                         onClick={() => setSelected(pkg._id)}
                         className={`flex items-center gap-4 p-4 rounded-2xl border-2 cursor-pointer transition-all ${selected === pkg._id ? 'border-primary bg-primary/5' : 'border-gray-200 bg-white hover:border-primary/40'}`}
                       >
-                        <img src={pkg.image} alt={pkg.title} className="w-20 h-16 object-cover rounded-xl shrink-0" />
+                        <img src={imageUrl(pkg.image)} onError={handleImageError} alt={pkg.title} className="w-20 h-16 object-cover rounded-xl shrink-0" />
                         <div>
                           <h3 className="font-bold text-gray-900 text-sm">{pkg.title}</h3>
                           <p className="text-xs text-gray-500 mt-0.5">{pkg.duration}</p>

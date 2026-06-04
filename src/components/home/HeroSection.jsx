@@ -4,6 +4,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useSelector } from 'react-redux'
 import api from '../../services/api'
+import { handleImageError } from '../../utils/image'
 
 function useDebounce(value, delay) {
   const [debounced, setDebounced] = useState(value)
@@ -32,6 +33,11 @@ export default function HeroSection() {
 
   // Fetch from API when query changes
   useEffect(() => {
+    if (selected && debouncedQuery === (selected.item.name || selected.item.title)) {
+      setResults({ destinations: [], packages: [] })
+      setOpen(false)
+      return
+    }
     if (debouncedQuery.trim().length < 2) {
       setResults({ destinations: [], packages: [] })
       setOpen(false)
@@ -45,7 +51,7 @@ export default function HeroSection() {
       setResults({ destinations, packages })
       setOpen(destinations.length > 0 || packages.length > 0)
     }).finally(() => setLoading(false))
-  }, [debouncedQuery])
+  }, [debouncedQuery, selected])
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -62,13 +68,31 @@ export default function HeroSection() {
     setOpen(false)
   }
 
+  const saveSearch = () => {
+    api.post('/searches', {
+      query: query.trim(),
+      selectedType: selected?.type || 'general',
+      selectedName: selected?.item?.name || selected?.item?.title || query.trim(),
+      selectedId: selected?.item?._id || '',
+      category: selected?.item?.category || selected?.item?.type || '',
+      checkIn,
+      guests,
+      source: 'hero',
+    }).catch(() => {})
+  }
+
   const search = () => {
+    saveSearch()
     if (!query.trim()) { navigate('/destinations'); return }
     if (selected?.type === 'package') {
       navigate(selected.item.type === 'domestic' ? '/destinations/domestic' : '/destinations/international')
     } else {
       navigate('/destinations')
     }
+  }
+
+  const planMyTrip = () => {
+    window.open(`https://wa.me/${s.whatsapp || '919343088141'}?text=${encodeURIComponent('Hello Trinetra Global Holidays! I want to plan my trip.')}`, '_blank', 'noopener,noreferrer')
   }
 
   useGSAP(() => {
@@ -83,7 +107,7 @@ export default function HeroSection() {
   return (
     <section
       ref={container}
-      className="relative min-h-[88vh] flex flex-col items-center justify-center text-white overflow-hidden"
+      className="relative min-h-[88vh] flex flex-col items-center justify-center text-white overflow-hidden py-10"
       style={{
         backgroundImage: `url(${s.heroBg || 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&auto=format&fit=crop'})`,
         backgroundSize: 'cover',
@@ -113,6 +137,44 @@ export default function HeroSection() {
         <h1 className="hero-title text-3xl md:text-6xl font-bold text-white drop-shadow-lg leading-tight">
           {s.heroTitle}
         </h1>
+        <p className="max-w-2xl mx-auto mt-4 text-sm md:text-base text-white/90 leading-relaxed">
+          We plan domestic and international holidays with handpicked hotels, guided experiences, flights, visas, insurance and 24/7 travel assistance.
+        </p>
+        <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <button onClick={planMyTrip} className="bg-green-500 text-white font-bold px-8 py-3 rounded-full hover:bg-green-600 transition-colors shadow-xl">
+            Plan My Trip
+          </button>
+          <a href={`tel:${s.phone}`} className="bg-white/15 backdrop-blur-sm border border-white/30 text-white font-semibold px-6 py-3 rounded-full hover:bg-white/25 transition-colors">
+            Call {s.phone}
+          </a>
+        </div>
+        <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-4xl mx-auto">
+          {[
+            ['What We Sell', 'Custom holidays, flights, hotels, visas and travel insurance.'],
+            ['Why Trust Us', `${s.businessRegistration || 'Registered Travel Business'} · ${s.googleReviews || '4.8/5 Google Reviews'}`],
+            ['Contact Fast', `WhatsApp or call us directly for a free trip plan.`],
+          ].map(([title, text]) => (
+            <div key={title} className="bg-white/12 backdrop-blur-md border border-white/20 rounded-2xl px-4 py-3 text-left">
+              <p className="text-gold text-xs font-bold uppercase tracking-wide">{title}</p>
+              <p className="text-white/90 text-xs mt-1 leading-relaxed">{text}</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-2 text-xs">
+          {[s.gstNumber, s.businessRegistration, s.googleReviews, `${s.happyTravelers || '50+'} Happy Travelers`, s.securePaymentBadge].filter(Boolean).map((item) => (
+            <span key={item} className="bg-white/90 text-gray-800 font-semibold px-3 py-1.5 rounded-full">{item}</span>
+          ))}
+        </div>
+        {(s.customerPhotos || []).length > 0 && (
+          <div className="mt-4 flex items-center justify-center gap-3">
+            <div className="flex -space-x-3">
+              {s.customerPhotos.slice(0, 4).map((img, i) => (
+                <img key={i} src={img} alt="" className="w-9 h-9 rounded-full object-cover border-2 border-white" />
+              ))}
+            </div>
+            <span className="text-xs text-white/85">Real traveler memories from recent holidays</span>
+          </div>
+        )}
       </div>
 
       {/* Search Bar */}
@@ -162,7 +224,7 @@ export default function HeroSection() {
                         <button key={d._id} onClick={() => pick(d, 'destination')}
                           className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-primary/5 transition-colors text-left">
                           <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0">
-                            {d.image ? <img src={d.image} alt={d.name} className="w-full h-full object-cover" /> :
+                            {d.image ? <img src={d.image} onError={handleImageError} alt={d.name} className="w-full h-full object-cover" /> :
                               <div className="w-full h-full bg-gray-100 flex items-center justify-center text-base">🌍</div>}
                           </div>
                           <div>
@@ -183,7 +245,7 @@ export default function HeroSection() {
                         <button key={p._id} onClick={() => pick(p, 'package')}
                           className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-primary/5 transition-colors text-left">
                           <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0">
-                            {p.image ? <img src={p.image} alt={p.title} className="w-full h-full object-cover" /> :
+                            {p.image ? <img src={p.image} onError={handleImageError} alt={p.title} className="w-full h-full object-cover" /> :
                               <div className="w-full h-full bg-gray-100 flex items-center justify-center text-base">📦</div>}
                           </div>
                           <div>

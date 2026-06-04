@@ -22,6 +22,7 @@ export default function Footer() {
   const socials = [
     { key: 'facebook', url: s.facebook, icon: 'facebook' },
     { key: 'instagram', url: s.instagram, icon: 'instagram' },
+    { key: 'linkedin', url: s.linkedin, icon: 'linkedin' },
     { key: 'twitter', url: s.twitter, icon: 'twitter' },
     { key: 'youtube', url: s.youtube, icon: 'youtube' },
   ].filter(s => s.url)
@@ -139,6 +140,7 @@ export default function Footer() {
 function SocialIcon({ name }) {
   if (name === 'facebook') return <svg className="w-3.5 h-3.5 text-gray-600" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" /></svg>
   if (name === 'instagram') return <svg className="w-3.5 h-3.5 text-gray-600" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" /></svg>
+  if (name === 'linkedin') return <svg className="w-3.5 h-3.5 text-gray-600" fill="currentColor" viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.49 6S0 4.88 0 3.5 1.11 1 2.49 1s2.49 1.12 2.49 2.5zM.5 8h4v13h-4V8zm7.5 0h3.8v1.78h.05c.53-1 1.83-2.06 3.76-2.06 4.02 0 4.76 2.65 4.76 6.09V21h-4v-6.35c0-1.51-.03-3.46-2.11-3.46-2.11 0-2.43 1.65-2.43 3.35V21h-4V8z" /></svg>
   if (name === 'twitter') return <svg className="w-3.5 h-3.5 text-gray-600" fill="currentColor" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" /></svg>
   if (name === 'youtube') return <svg className="w-3.5 h-3.5 text-gray-600" fill="currentColor" viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58zM9.75 15.02V8.98L15.5 12l-5.75 3.02z" /></svg>
   return null

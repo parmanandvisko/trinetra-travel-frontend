@@ -7,6 +7,7 @@ import About from '../pages/About/About'
 import Contact from '../pages/Contact/Contact'
 import Blogs from '../pages/Blogs/Blogs'
 import Destinations from '../pages/Domestic/Destinations'
+import DestinationList from '../pages/Domestic/DestinationList'
 import Domestic from '../pages/Domestic/Domestic'
 import International from '../pages/International/International'
 import Booking from '../pages/Booking/Booking'
@@ -38,6 +39,7 @@ export default function AppRoutes() {
           <Route path="/refund" element={<Refund />} />
           <Route path="/travel-insurance" element={<Contact />} />
           <Route path="/destinations" element={<Destinations />} />
+          <Route path="/destinations/:category/all" element={<DestinationList />} />
           <Route path="/destinations/domestic" element={<Domestic />} />
           <Route path="/destinations/international" element={<International />} />
           <Route path="/booking" element={<Booking />} />

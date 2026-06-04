@@ -21,7 +21,7 @@ export default function Footer() {
 
   const socials = [
     { key: 'facebook', url: s.facebook, icon: 'facebook' },
-    { key: 'instagram', url: s.instagram, icon: 'instagram' },
+    { key: 'instagram', url: s.instagram, icon: 'instagram' }, 
     { key: 'linkedin', url: s.linkedin, icon: 'linkedin' },
     { key: 'twitter', url: s.twitter, icon: 'twitter' },
     { key: 'youtube', url: s.youtube, icon: 'youtube' },

@@ -13,7 +13,7 @@ const supportLinks = [
   { label: 'Terms & Conditions', to: '/terms' },
   { label: 'Privacy Policy', to: '/privacy' },
   { label: 'Refund Policy', to: '/refund' },
-  { label: 'Travel Insurance', to: '/contact' },
+  { label: 'Travel Insurance', to: '/contact' }, 
 ]
 
 export default function Footer() {

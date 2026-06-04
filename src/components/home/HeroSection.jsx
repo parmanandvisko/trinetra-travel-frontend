@@ -107,7 +107,7 @@ export default function HeroSection() {
   return (
     <section
       ref={container}
-      className="relative min-h-[88vh] flex flex-col items-center justify-center text-white overflow-hidden py-10"
+      className="relative min-h-[88vh] flex flex-col items-center justify-center text-white overflow-visible py-10"
       style={{
         backgroundImage: `url(${s.heroBg || 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&auto=format&fit=crop'})`,
         backgroundSize: 'cover',
@@ -178,12 +178,12 @@ export default function HeroSection() {
       </div>
 
       {/* Search Bar */}
-      <div className="hero-search relative z-10 w-full max-w-5xl mx-auto px-4">
-        <div className="bg-white rounded-2xl shadow-2xl p-4 md:p-6">
+      <div className="hero-search relative z-[80] w-full max-w-5xl mx-auto px-4">
+        <div className="bg-white rounded-2xl shadow-2xl p-4 md:p-6 overflow-visible">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
             {/* Destination — searchable autocomplete */}
-            <div className="relative flex flex-col gap-1.5 lg:col-span-1" ref={dropdownRef}>
+            <div className="relative z-[90] flex flex-col gap-1.5 lg:col-span-1" ref={dropdownRef}>
               <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide flex items-center gap-1.5">
                 <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -216,7 +216,7 @@ export default function HeroSection() {
 
               {/* Dropdown */}
               {open && total > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-1.5 bg-white border border-gray-200 rounded-xl shadow-2xl z-50 overflow-hidden max-h-72 overflow-y-auto">
+                <div className="absolute top-full left-0 right-0 mt-1.5 bg-white border border-gray-200 rounded-xl shadow-2xl z-[100] overflow-hidden max-h-72 overflow-y-auto">
                   {results.destinations.length > 0 && (
                     <>
                       <p className="px-3 pt-2.5 pb-1 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Destinations</p>

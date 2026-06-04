@@ -18,5 +18,5 @@ export function bookingConfirmMsg(pkg, form) {
 }
 
 export function contactInquiryMsg(form) {
-  return `Hello Trinetra Tours! ✉️\n\n*New Message from Website*\n\n👤 *Name:* ${form.name}\n📧 *Email:* ${form.email}${form.phone ? `\n📞 *Phone:* ${form.phone}` : ''}${form.subject ? `\n📋 *Subject:* ${form.subject}` : ''}\n\n💬 *Message:*\n${form.message}`
+  return `Hello Trinetra Tours! ✉️\n\n*New Message from Website*\n\n👤 *Name:* ${form.name}${form.phone ? `\n📞 *Phone:* ${form.phone}` : ''}${form.email ? `\n📧 *Email:* ${form.email}` : ''}${form.subject ? `\n📋 *Subject:* ${form.subject}` : ''}${form.message ? `\n\n💬 *Message:*\n${form.message}` : ''}`
 }

@@ -14,10 +14,17 @@ const contactInfo = [
   { icon: '📍', title: 'Visit Us', value: '123, Travel Street', sub: 'Mumbai, India 400001' },
 ]
 
+const countries = [
+  { flag: '🇮🇳', code: '+91' },
+  { flag: '🇦🇪', code: '+971' },
+  { flag: '🇺🇸', code: '+1' },
+  { flag: '🇬🇧', code: '+44' },
+]
+
 export default function Contact() {
   const formRef = useRef(null)
   const infoRef = useRef(null)
-  const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' })
+  const [form, setForm] = useState({ name: '', email: '', countryCode: '+91', phone: '', subject: '', message: '' })
   const [submitting, setSubmitting] = useState(false)
   const [sent, setSent] = useState(false)
 
@@ -31,19 +38,21 @@ export default function Contact() {
   }, { scope: formRef })
 
   const handle = (e) => setForm({ ...form, [e.target.name]: e.target.value })
+  const handlePhone = (e) => setForm({ ...form, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })
 
   const submit = async (e) => {
     e.preventDefault()
-    if (!form.name || !form.email || !form.message) return
+    if (!form.name || !/^\d{10}$/.test(form.phone)) return
+    const payload = { ...form, phone: `${form.countryCode} ${form.phone}` }
     setSubmitting(true)
     try {
-      await api.post('/contacts', form)
+      await api.post('/contacts', payload)
     } catch {
       // proceed even if API fails
     }
-    openWhatsApp(contactInquiryMsg(form))
+    openWhatsApp(contactInquiryMsg(payload))
     setSent(true)
-    setForm({ name: '', email: '', phone: '', subject: '', message: '' })
+    setForm({ name: '', email: '', countryCode: '+91', phone: '', subject: '', message: '' })
     setSubmitting(false)
   }
 
@@ -93,21 +102,26 @@ export default function Contact() {
                       <input name="name" value={form.name} onChange={handle} placeholder="John Doe" required className="mt-1.5 w-full border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-primary" />
                     </div>
                     <div>
-                      <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Phone</label>
-                      <input name="phone" value={form.phone} onChange={handle} placeholder="+91 00000 00000" className="mt-1.5 w-full border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-primary" />
+                      <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Mobile Number *</label>
+                      <div className="mt-1.5 flex rounded-xl border border-gray-200 overflow-hidden focus-within:border-primary">
+                        <select name="countryCode" value={form.countryCode} onChange={handle} className="bg-gray-50 px-2 text-sm text-gray-700 focus:outline-none border-r border-gray-200">
+                          {countries.map((c) => <option key={c.code} value={c.code}>{c.flag} {c.code}</option>)}
+                        </select>
+                        <input name="phone" value={form.phone} onChange={handlePhone} placeholder="10 digit mobile" required pattern="\d{10}" className="w-full py-3 px-4 text-sm focus:outline-none" />
+                      </div>
                     </div>
                   </div>
                   <div>
-                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Email *</label>
-                    <input name="email" type="email" value={form.email} onChange={handle} placeholder="john@example.com" required className="mt-1.5 w-full border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-primary" />
+                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Email</label>
+                    <input name="email" type="email" value={form.email} onChange={handle} placeholder="john@example.com" className="mt-1.5 w-full border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-primary" />
                   </div>
                   <div>
                     <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Subject</label>
                     <input name="subject" value={form.subject} onChange={handle} placeholder="Tour inquiry..." className="mt-1.5 w-full border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-primary" />
                   </div>
                   <div>
-                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Message *</label>
-                    <textarea name="message" value={form.message} onChange={handle} rows={5} placeholder="Tell us about your travel plans..." required className="mt-1.5 w-full border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-primary resize-none" />
+                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Message</label>
+                    <textarea name="message" value={form.message} onChange={handle} rows={5} placeholder="Tell us about your travel plans..." className="mt-1.5 w-full border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-primary resize-none" />
                   </div>
                   <button type="submit" disabled={submitting} className="w-full bg-green-500 text-white font-semibold py-3.5 rounded-xl hover:bg-green-600 transition-colors text-sm disabled:opacity-70 flex items-center justify-center gap-2">
                     <WaIcon className="w-4 h-4" />

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchAllDestinations } from '../../store/slices/destinationsSlice'
 import { openWhatsApp, destinationQuotationMsg } from '../../utils/whatsapp'
@@ -11,6 +11,7 @@ import PageWrapper from '../../components/ui/PageWrapper'
 export default function DestinationList() {
   const { category } = useParams()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { all, loading } = useSelector((s) => s.destinations)
 
   useEffect(() => { dispatch(fetchAllDestinations()) }, [dispatch])
@@ -46,7 +47,7 @@ export default function DestinationList() {
               <div className="col-span-4 text-center py-20 text-gray-400">No destinations found</div>
             ) : (
               items.map((item) => (
-                <div key={item._id} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow group">
+                <div key={item._id} role="button" tabIndex={0} onClick={() => navigate(`/destinations/detail/${item._id}`)} onKeyDown={(e) => e.key === 'Enter' && navigate(`/destinations/detail/${item._id}`)} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow group cursor-pointer">
                   <div className="relative h-48 overflow-hidden bg-gray-100">
                     <img src={imageUrl(item.image)} onError={handleImageError} alt={item.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                     <div className="absolute top-3 right-3 bg-white/90 rounded-full px-2.5 py-1 flex items-center gap-1">
@@ -58,7 +59,7 @@ export default function DestinationList() {
                     <p className="text-xs text-gold font-semibold mb-1">{item.subtitle || item.country}</p>
                     <h3 className="font-bold text-gray-900 text-sm mb-2">{item.name}</h3>
                     <p className="text-xs text-gray-500 line-clamp-3 mb-4">{item.description}</p>
-                    <button onClick={() => openWhatsApp(destinationQuotationMsg(item))} className="inline-flex items-center gap-1.5 bg-green-500 text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-green-600 transition-colors">
+                    <button onClick={(e) => { e.stopPropagation(); openWhatsApp(destinationQuotationMsg(item)) }} className="inline-flex items-center gap-1.5 bg-green-500 text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-green-600 transition-colors">
                       <WaIcon className="w-3.5 h-3.5" />
                       Book Now
                     </button>

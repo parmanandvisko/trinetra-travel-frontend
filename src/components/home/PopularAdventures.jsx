@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchFeaturedPackages } from '../../store/slices/packagesSlice'
 import { openWhatsApp, packageInquiryMsg } from "../../utils/whatsapp"
+import { formatINR } from '../../utils/currency'
 import { imageUrl, handleImageError } from '../../utils/image'
 import WaIcon from "../../components/ui/WaIcon"
 
@@ -59,24 +60,28 @@ export default function PopularAdventures() {
           ) : (
             packages.map((pkg) => (
               <div key={pkg._id} className="pa-card bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
-                <div className="relative h-44 overflow-hidden">
-                  <img src={imageUrl(pkg.image)} onError={handleImageError} alt={pkg.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full px-2.5 py-1 flex items-center gap-1">
-                    <svg className="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                    <span className="text-xs font-semibold text-gray-700">{pkg.rating || '4.8'}</span>
+                <Link to={`/packages/${pkg._id}`} className="block">
+                  <div className="relative h-44 overflow-hidden">
+                    <img src={imageUrl(pkg.image)} onError={handleImageError} alt={pkg.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                    <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full px-2.5 py-1 flex items-center gap-1">
+                      <svg className="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                      <span className="text-xs font-semibold text-gray-700">{pkg.rating || '4.8'}</span>
+                    </div>
                   </div>
-                </div>
-                <div className="p-4">
-                  <p className="text-xs text-gold font-semibold mb-1">{pkg.duration}</p>
-                  <h3 className="font-bold text-gray-900 text-sm mb-1.5">{pkg.title}</h3>
-                  <p className="text-xs text-gray-500 leading-relaxed mb-4">{pkg.description || pkg.desc}</p>
+                  <div className="p-4 pb-0">
+                    <p className="text-xs text-gold font-semibold mb-1">{pkg.duration}</p>
+                    <h3 className="font-bold text-gray-900 text-sm mb-1.5">{pkg.title}</h3>
+                    <p className="text-xs text-gray-500 leading-relaxed mb-4">{pkg.description || pkg.desc}</p>
+                  </div>
+                </Link>
+                <div className="px-4 pb-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="text-primary font-bold text-base">${pkg.price}</span>
+                      <span className="text-primary font-bold text-base">{formatINR(pkg.price)}</span>
                       <span className="text-gray-400 text-xs"> /person</span>
-                      {pkg.originalPrice && <p className="text-gray-400 text-xs line-through">${pkg.originalPrice}</p>}
+                      {pkg.originalPrice && <p className="text-gray-400 text-xs line-through">{formatINR(pkg.originalPrice)}</p>}
                     </div>
                     <button onClick={() => openWhatsApp(packageInquiryMsg(pkg))} className="flex items-center gap-1.5 bg-green-500 text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-green-600 transition-colors">
                       <WaIcon className="w-3.5 h-3.5" />

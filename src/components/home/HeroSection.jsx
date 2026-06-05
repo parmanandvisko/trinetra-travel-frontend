@@ -5,6 +5,7 @@ import gsap from 'gsap'
 import { useSelector } from 'react-redux'
 import api from '../../services/api'
 import { handleImageError } from '../../utils/image'
+import { formatINR } from '../../utils/currency'
 
 function useDebounce(value, delay) {
   const [debounced, setDebounced] = useState(value)
@@ -20,6 +21,7 @@ export default function HeroSection() {
   const dropdownRef = useRef(null)
   const navigate = useNavigate()
   const s = useSelector((st) => st.settings.data)
+  const phones = [s.phone, s.phone2, s.phone3].filter(Boolean)
 
   const [query, setQuery] = useState('')
   const [checkIn, setCheckIn] = useState('')
@@ -31,7 +33,6 @@ export default function HeroSection() {
 
   const debouncedQuery = useDebounce(query, 350)
 
-  // Fetch from API when query changes
   useEffect(() => {
     if (selected && debouncedQuery === (selected.item.name || selected.item.title)) {
       setResults({ destinations: [], packages: [] })
@@ -53,7 +54,6 @@ export default function HeroSection() {
     }).finally(() => setLoading(false))
   }, [debouncedQuery, selected])
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handler = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) setOpen(false)
@@ -84,15 +84,18 @@ export default function HeroSection() {
   const search = () => {
     saveSearch()
     if (!query.trim()) { navigate('/destinations'); return }
-    if (selected?.type === 'package') {
-      navigate(selected.item.type === 'domestic' ? '/destinations/domestic' : '/destinations/international')
-    } else {
-      navigate('/destinations')
-    }
+    const params = new URLSearchParams({
+      q: query.trim(),
+      ...(checkIn && { checkIn }),
+      ...(guests && { guests }),
+      ...(selected?.type && { selectedType: selected.type }),
+      ...(selected?.item?._id && { selectedId: selected.item._id }),
+    })
+    navigate(`/search?${params.toString()}`)
   }
 
   const planMyTrip = () => {
-    window.open(`https://wa.me/${s.whatsapp || '919343088141'}?text=${encodeURIComponent('Hello Trinetra Global Holidays! I want to plan my trip.')}`, '_blank', 'noopener,noreferrer')
+    window.open(`https://wa.me/${s.whatsapp || '919892494688'}?text=${encodeURIComponent('Hello Trinetra Global Holidays! I want to plan my trip.')}`, '_blank', 'noopener,noreferrer')
   }
 
   useGSAP(() => {
@@ -116,7 +119,6 @@ export default function HeroSection() {
     >
       <div className="absolute inset-0 bg-black/45" />
 
-      {/* Decorative SVG paths */}
       <div className="absolute top-10 left-10 opacity-40 pointer-events-none hidden md:block">
         <svg width="140" height="90" viewBox="0 0 140 90" fill="none">
           <path d="M10 80 Q70 10 130 45" stroke="#D4A017" strokeWidth="2" strokeDasharray="6 5" fill="none" />
@@ -129,7 +131,6 @@ export default function HeroSection() {
         </svg>
       </div>
 
-      {/* Heading */}
       <div className="relative z-10 text-center px-4 mb-8 md:mb-10">
         <p className="hero-label text-gold text-2xl md:text-4xl mb-3" style={{ fontFamily: "'Dancing Script', cursive" }}>
           {s.heroSubtitle}
@@ -140,19 +141,19 @@ export default function HeroSection() {
         <p className="max-w-2xl mx-auto mt-4 text-sm md:text-base text-white/90 leading-relaxed">
           We plan domestic and international holidays with handpicked hotels, guided experiences, flights, visas, insurance and 24/7 travel assistance.
         </p>
-        <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
+        <div className="mt-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 max-w-3xl mx-auto">
           <button onClick={planMyTrip} className="bg-green-500 text-white font-bold px-8 py-3 rounded-full hover:bg-green-600 transition-colors shadow-xl">
             Plan My Trip
           </button>
-          <a href={`tel:${s.phone}`} className="bg-white/15 backdrop-blur-sm border border-white/30 text-white font-semibold px-6 py-3 rounded-full hover:bg-white/25 transition-colors">
-            Call {s.phone}
+          <a href={`tel:${s.phone}`} className="bg-white/15 backdrop-blur-sm border border-white/30 text-white font-semibold px-6 py-3 rounded-full hover:bg-white/25 transition-colors text-center leading-snug break-words">
+            Call {phones.join(' / ')}
           </a>
         </div>
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-4xl mx-auto">
           {[
             ['What We Sell', 'Custom holidays, flights, hotels, visas and travel insurance.'],
-            ['Why Trust Us', `${s.businessRegistration || 'Registered Travel Business'} · ${s.googleReviews || '4.8/5 Google Reviews'}`],
-            ['Contact Fast', `WhatsApp or call us directly for a free trip plan.`],
+            ['Why Trust Us', `${s.businessRegistration || 'Registered Travel Business'} - ${s.googleReviews || '4.8/5 Google Reviews'}`],
+            ['Contact Fast', 'WhatsApp or call us directly for a free trip plan.'],
           ].map(([title, text]) => (
             <div key={title} className="bg-white/12 backdrop-blur-md border border-white/20 rounded-2xl px-4 py-3 text-left">
               <p className="text-gold text-xs font-bold uppercase tracking-wide">{title}</p>
@@ -177,12 +178,9 @@ export default function HeroSection() {
         )}
       </div>
 
-      {/* Search Bar */}
       <div className="hero-search relative z-[80] w-full max-w-5xl mx-auto px-4">
         <div className="bg-white rounded-2xl shadow-2xl p-4 md:p-6 overflow-visible">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-
-            {/* Destination — searchable autocomplete */}
             <div className="relative z-[90] flex flex-col gap-1.5 lg:col-span-1" ref={dropdownRef}>
               <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide flex items-center gap-1.5">
                 <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -214,18 +212,16 @@ export default function HeroSection() {
                 )}
               </div>
 
-              {/* Dropdown */}
               {open && total > 0 && (
                 <div className="absolute top-full left-0 right-0 mt-1.5 bg-white border border-gray-200 rounded-xl shadow-2xl z-[100] overflow-hidden max-h-72 overflow-y-auto">
                   {results.destinations.length > 0 && (
                     <>
                       <p className="px-3 pt-2.5 pb-1 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Destinations</p>
                       {results.destinations.map((d) => (
-                        <button key={d._id} onClick={() => pick(d, 'destination')}
-                          className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-primary/5 transition-colors text-left">
+                        <button key={d._id} onClick={() => pick(d, 'destination')} className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-primary/5 transition-colors text-left">
                           <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0">
                             {d.image ? <img src={d.image} onError={handleImageError} alt={d.name} className="w-full h-full object-cover" /> :
-                              <div className="w-full h-full bg-gray-100 flex items-center justify-center text-base">🌍</div>}
+                              <div className="w-full h-full bg-gray-100 flex items-center justify-center text-base">D</div>}
                           </div>
                           <div>
                             <p className="text-sm font-semibold text-gray-900">{d.name}</p>
@@ -242,15 +238,14 @@ export default function HeroSection() {
                     <>
                       <p className="px-3 pt-2.5 pb-1 text-[10px] font-bold text-gray-400 uppercase tracking-widest border-t border-gray-100 mt-1">Tour Packages</p>
                       {results.packages.map((p) => (
-                        <button key={p._id} onClick={() => pick(p, 'package')}
-                          className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-primary/5 transition-colors text-left">
+                        <button key={p._id} onClick={() => pick(p, 'package')} className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-primary/5 transition-colors text-left">
                           <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0">
                             {p.image ? <img src={p.image} onError={handleImageError} alt={p.title} className="w-full h-full object-cover" /> :
-                              <div className="w-full h-full bg-gray-100 flex items-center justify-center text-base">📦</div>}
+                              <div className="w-full h-full bg-gray-100 flex items-center justify-center text-base">P</div>}
                           </div>
                           <div>
                             <p className="text-sm font-semibold text-gray-900">{p.title}</p>
-                            <p className="text-xs text-gray-400">{p.duration} · <span className="text-primary font-semibold">${p.price}</span></p>
+                            <p className="text-xs text-gray-400">{p.duration} - <span className="text-primary font-semibold">{formatINR(p.price)}</span></p>
                           </div>
                           <span className={`ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${p.type === 'domestic' ? 'bg-orange-100 text-orange-600' : 'bg-blue-100 text-blue-600'}`}>
                             {p.type}
@@ -263,7 +258,6 @@ export default function HeroSection() {
               )}
             </div>
 
-            {/* Check In */}
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide flex items-center gap-1.5">
                 <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -280,7 +274,6 @@ export default function HeroSection() {
               />
             </div>
 
-            {/* Guests */}
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide flex items-center gap-1.5">
                 <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -297,7 +290,6 @@ export default function HeroSection() {
               </select>
             </div>
 
-            {/* Search Button */}
             <div className="flex items-end">
               <button
                 onClick={search}

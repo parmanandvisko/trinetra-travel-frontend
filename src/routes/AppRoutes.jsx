@@ -6,8 +6,11 @@ import Home from '../pages/Home/Home'
 import About from '../pages/About/About'
 import Contact from '../pages/Contact/Contact'
 import Blogs from '../pages/Blogs/Blogs'
+import SearchResults from '../pages/Search/SearchResults'
 import Destinations from '../pages/Domestic/Destinations'
 import DestinationList from '../pages/Domestic/DestinationList'
+import DestinationDetail from '../pages/Domestic/DestinationDetail'
+import PackageDetail from '../pages/Domestic/PackageDetail'
 import Domestic from '../pages/Domestic/Domestic'
 import International from '../pages/International/International'
 import Booking from '../pages/Booking/Booking'
@@ -17,6 +20,7 @@ import FAQ from '../pages/Support/FAQ'
 import Terms from '../pages/Support/Terms'
 import Privacy from '../pages/Support/Privacy'
 import Refund from '../pages/Support/Refund'
+import PaymentDetails from '../pages/Support/PaymentDetails'
 
 export default function AppRoutes() {
   return (
@@ -31,17 +35,21 @@ export default function AppRoutes() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/search" element={<SearchResults />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/blogs/:id" element={<BlogDetail />} />
           <Route path="/faq" element={<FAQ />} />
+          <Route path="/payment-details" element={<PaymentDetails />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/refund" element={<Refund />} />
           <Route path="/travel-insurance" element={<Contact />} />
           <Route path="/destinations" element={<Destinations />} />
           <Route path="/destinations/:category/all" element={<DestinationList />} />
+          <Route path="/destinations/detail/:id" element={<DestinationDetail />} />
           <Route path="/destinations/domestic" element={<Domestic />} />
           <Route path="/destinations/international" element={<International />} />
+          <Route path="/packages/:id" element={<PackageDetail />} />
           <Route path="/booking" element={<Booking />} />
         </Route>
 

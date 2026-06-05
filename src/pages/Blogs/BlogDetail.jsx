@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchAllBlogs } from '../../store/slices/blogsSlice'
+import { openWhatsApp } from '../../utils/whatsapp'
 import PageHero from '../../components/ui/PageHero'
 import PageWrapper from '../../components/ui/PageWrapper'
 
@@ -10,6 +11,9 @@ export default function BlogDetail() {
   const dispatch = useDispatch()
   const { all: blogs, loading } = useSelector((s) => s.blogs)
   const [blog, setBlog] = useState(null)
+  const connectExpert = () => {
+    openWhatsApp('Hello Trinetra Global Holidays! I read your blog and want to connect with a travel expert for my trip.')
+  }
 
   useEffect(() => {
     if (blogs.length === 0) dispatch(fetchAllBlogs())
@@ -105,9 +109,9 @@ export default function BlogDetail() {
               <div className="mt-10 bg-primary/5 border border-primary/20 rounded-2xl p-6 text-center">
                 <h3 className="font-bold text-gray-900 mb-2">Plan Your Dream Trip</h3>
                 <p className="text-gray-500 text-sm mb-4">Inspired by this article? Let us help you plan your perfect holiday!</p>
-                <Link to="/booking" className="bg-primary text-white font-semibold px-6 py-3 rounded-full hover:bg-primary-dark transition-colors text-sm inline-block">
-                  Book a Package
-                </Link>
+                <button onClick={connectExpert} className="bg-green-500 text-white font-semibold px-6 py-3 rounded-full hover:bg-green-600 transition-colors text-sm inline-block">
+                  Connect Our Travel Expert
+                </button>
               </div>
 
               <div className="mt-6 text-center">
@@ -142,7 +146,7 @@ export default function BlogDetail() {
                 <div className="text-3xl mb-3">✈️</div>
                 <h3 className="font-bold mb-2">Ready to Travel?</h3>
                 <p className="text-white/80 text-xs mb-4">Get a free personalized itinerary from our experts</p>
-                <a href="https://wa.me/919343088141" target="_blank" rel="noreferrer" className="block bg-white text-primary font-semibold text-sm py-2.5 rounded-full hover:bg-gray-100 transition-colors">
+                <a href="https://wa.me/919892494688" target="_blank" rel="noreferrer" className="block bg-white text-primary font-semibold text-sm py-2.5 rounded-full hover:bg-gray-100 transition-colors">
                   WhatsApp Us
                 </a>
               </div>

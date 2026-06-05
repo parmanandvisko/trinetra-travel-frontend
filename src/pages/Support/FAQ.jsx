@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import PageHero from '../../components/ui/PageHero'
 import PageWrapper from '../../components/ui/PageWrapper'
+import FormattedText from '../../components/ui/FormattedText'
 
 const STATIC_FAQS = [
   { category: 'Booking & Payment', question: 'How do I book a tour package?', answer: 'You can book by clicking "Book Now" on any package to send a WhatsApp inquiry, or use the booking form. Our team will confirm within 24 hours.' },
@@ -58,7 +59,9 @@ export default function FAQ() {
                           </svg>
                         </button>
                         {open === key && (
-                          <div className="px-5 pb-4 text-sm text-gray-600 leading-relaxed border-t border-gray-100 pt-3 bg-gray-50">{item.answer}</div>
+                          <div className="px-5 pb-4 text-sm border-t border-gray-100 pt-3 bg-gray-50">
+                            <FormattedText text={item.answer} />
+                          </div>
                         )}
                       </div>
                     )

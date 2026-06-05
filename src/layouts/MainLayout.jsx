@@ -14,4 +14,5 @@ export default function MainLayout() {
       <WhatsAppFloat />
     </div>
   )
+  
 }

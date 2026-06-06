@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useSelector } from 'react-redux'
 import PageHero from '../../components/ui/PageHero'
 import PageWrapper from '../../components/ui/PageWrapper'
+import FormattedText from '../../components/ui/FormattedText'
 
 const STATIC_VALUES = [
   { icon: '🧭', title: 'Expert Guidance', desc: 'Our experienced travel experts craft every trip with precision and personal care.' },
@@ -56,10 +57,11 @@ export default function About() {
             <div className="mission-left">
               <p className="text-gold text-3xl mb-2" style={{ fontFamily: "'Dancing Script', cursive" }}>Who We Are</p>
               <h2 className="text-3xl font-bold text-gray-900 mb-5">{s.aboutTitle || 'Crafting Journeys That Last a Lifetime'}</h2>
-              <p className="text-gray-500 leading-relaxed mb-8 whitespace-pre-line">
-                {s.aboutDescription || 'Trinetra Global Holidays is a leading travel company based in Ambernath, Maharashtra. With over 15 years of experience, we have helped thousands of travelers explore the world with comfort, safety, and unforgettable memories.'}
-              </p>
-              <div className={`grid grid-cols-${Math.min(stats.length, 4)} gap-4`}>
+              <FormattedText
+                text={s.aboutDescription || 'Trinetra Global Holidays is a leading travel company based in Ambernath, Maharashtra. With over 15 years of experience, we have helped thousands of travelers explore the world with comfort, safety, and unforgettable memories.'}
+                className="mb-8"
+              />
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {stats.slice(0, 4).map((st, i) => (
                   <div key={i} className="text-center p-4 bg-gray-50 rounded-2xl">
                     <p className="text-2xl font-bold text-primary">{st.value}</p>
@@ -108,7 +110,7 @@ export default function About() {
               <p className="text-gold font-semibold text-sm mb-1" style={{ fontFamily: "'Dancing Script', cursive" }}>The People</p>
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Meet Our Team</h2>
             </div>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {team.map((member, i) => (
                 <div key={i} className="team-card text-center group">
                   <div className="relative w-28 h-28 mx-auto mb-4 rounded-full overflow-hidden shadow-lg">

@@ -5,7 +5,6 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchAllDestinations } from '../../store/slices/destinationsSlice'
-import { openWhatsApp, destinationQuotationMsg } from '../../utils/whatsapp'
 import { imageUrl, handleImageError } from '../../utils/image'
 import PageHero from '../../components/ui/PageHero'
 import PageWrapper from '../../components/ui/PageWrapper'
@@ -86,14 +85,14 @@ export default function Destinations() {
               [1,2,3,4,5,6,7,8].map((i) => <div key={i} className="dest-card rounded-2xl bg-gray-200 h-44 animate-pulse" />)
             ) : (
               destinations.map((d) => (
-                <button key={d._id} onClick={() => openWhatsApp(destinationQuotationMsg(d))} className="dest-card relative rounded-2xl overflow-hidden h-44 group text-left">
+                <Link key={d._id} to={`/destinations/detail/${d._id}`} className="dest-card relative rounded-2xl overflow-hidden h-44 group text-left">
                   <img src={imageUrl(d.image)} onError={handleImageError} alt={d.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                   <div className="absolute inset-0 gradient-overlay" />
                   <div className="absolute bottom-0 left-0 p-4">
                     <h3 className="text-white font-bold text-sm">{d.name}</h3>
                     <p className="text-gray-300 text-xs">{d.subtitle || d.country}</p>
                   </div>
-                </button>
+                </Link>
               ))
             )}
           </div>

@@ -1,11 +1,12 @@
 import { useRef, useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchDomesticPackages } from '../../store/slices/packagesSlice'
 import { openWhatsApp, packageInquiryMsg } from '../../utils/whatsapp'
+import { formatINR } from '../../utils/currency'
 import { imageUrl, handleImageError } from '../../utils/image'
 import WaIcon from '../../components/ui/WaIcon'
 import PageHero from '../../components/ui/PageHero'
@@ -14,6 +15,7 @@ import PageWrapper from '../../components/ui/PageWrapper'
 export default function Domestic() {
   const [active, setActive] = useState('All')
   const gridRef = useRef(null)
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const { domestic: packages, loading, error } = useSelector((s) => s.packages)
 
@@ -66,7 +68,7 @@ export default function Domestic() {
               <div className="col-span-4 text-center py-20 text-gray-400">No packages found</div>
             ) : (
               filtered.map((pkg) => (
-                <div key={pkg._id} className="pkg-card bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow group">
+                <div key={pkg._id} role="button" tabIndex={0} onClick={() => navigate(`/packages/${pkg._id}`)} onKeyDown={(e) => e.key === 'Enter' && navigate(`/packages/${pkg._id}`)} className="pkg-card bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow group cursor-pointer">
                   <div className="relative h-44 overflow-hidden">
                     <img src={imageUrl(pkg.image)} onError={handleImageError} alt={pkg.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                     {pkg.tag && <span className="absolute top-3 left-3 bg-white/90 text-primary text-xs font-bold px-3 py-1 rounded-full">{pkg.tag}</span>}
@@ -81,11 +83,11 @@ export default function Domestic() {
                     <p className="text-xs text-gray-500 mb-4 line-clamp-2">{pkg.description || pkg.desc}</p>
                     <div className="flex items-center justify-between">
                       <div>
-                        <span className="text-primary font-bold">${pkg.price}</span>
+                        <span className="text-primary font-bold">{formatINR(pkg.price)}</span>
                         <span className="text-gray-400 text-xs"> /person</span>
-                        {pkg.originalPrice && <p className="text-gray-400 text-xs line-through">${pkg.originalPrice}</p>}
+                        {pkg.originalPrice && <p className="text-gray-400 text-xs line-through">{formatINR(pkg.originalPrice)}</p>}
                       </div>
-                      <button onClick={() => openWhatsApp(packageInquiryMsg(pkg))} className="flex items-center gap-1.5 bg-green-500 text-white text-xs font-semibold px-3 py-2 rounded-full hover:bg-green-600 transition-colors">
+                      <button onClick={(e) => { e.stopPropagation(); openWhatsApp(packageInquiryMsg(pkg)) }} className="flex items-center gap-1.5 bg-green-500 text-white text-xs font-semibold px-3 py-2 rounded-full hover:bg-green-600 transition-colors">
                         <WaIcon className="w-3.5 h-3.5" /> Book Now
                       </button>
                     </div>

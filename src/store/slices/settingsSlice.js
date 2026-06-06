@@ -5,7 +5,9 @@ const DEFAULT = {
   businessName: 'Trinetra Global Holidays',
   tagline: 'Explore More, Worry Less.',
   phone: '+91 98924 94688',
-  whatsapp: '919343088141',
+  phone2: '',
+  phone3: '',
+  whatsapp: '919892494688',
   email: 'info@trinetraglobalholidays.com',
   address: '708, Mohan Nano Estates, Ambernath West, India 421505',
   logoUrl: '',
@@ -36,19 +38,32 @@ const DEFAULT = {
   termsContent: '',
   privacyContent: '',
   refundContent: '',
+  paymentDetails: '',
   copyrightText: '© 2025 Trinetra Global Holidays. All Rights Reserved.',
   footerTagline: 'Designed with ❤️ for Travelers',
 }
 
+const normalize = (data) => {
+  if (!data) return data
+  const businessName = /^trinetra global holid/i.test(data.businessName || '')
+    ? 'Trinetra Global Holidays'
+    : data.businessName
+  return {
+    ...data,
+    businessName,
+    whatsapp: ['9343088141', '919343088141'].includes(data.whatsapp) ? '919892494688' : data.whatsapp,
+  }
+}
+
 const cached = () => {
-  try { return JSON.parse(localStorage.getItem('site_settings') || 'null') } catch { return null }
+  try { return normalize(JSON.parse(localStorage.getItem('site_settings') || 'null')) } catch { return null }
 }
 
 export const fetchSettings = createAsyncThunk('settings/fetch', async () => {
   try {
     const res = await api.get(`/settings?_t=${Date.now()}`)
     const raw = res.data.data || {}
-    const data = { ...DEFAULT, ...raw }
+    const data = normalize({ ...DEFAULT, ...raw })
     localStorage.setItem('site_settings', JSON.stringify(data))
     return data
   } catch {

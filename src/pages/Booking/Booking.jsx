@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchAllPackages } from '../../store/slices/packagesSlice'
 import api from '../../services/api'
 import { openWhatsApp, bookingConfirmMsg } from '../../utils/whatsapp'
+import { formatINR } from '../../utils/currency'
 import { imageUrl, handleImageError } from '../../utils/image'
 import WaIcon from '../../components/ui/WaIcon'
 import PageHero from '../../components/ui/PageHero'
@@ -84,17 +85,17 @@ export default function Booking() {
       <section className="py-14 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Step Indicator */}
-          <div className="flex items-center justify-center gap-0 mb-12">
+          <div className="flex items-start justify-center gap-0 mb-12 overflow-x-auto pb-2">
             {steps.map((s, i) => (
               <div key={s} className="flex items-center">
                 <div className="flex flex-col items-center">
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all ${i <= step ? 'bg-primary text-white' : 'bg-gray-200 text-gray-500'}`}>
                     {i < step ? '✓' : i + 1}
                   </div>
-                  <span className={`text-xs mt-1.5 font-medium ${i <= step ? 'text-primary' : 'text-gray-400'}`}>{s}</span>
+                  <span className={`text-[11px] sm:text-xs mt-1.5 font-medium text-center w-20 sm:w-auto ${i <= step ? 'text-primary' : 'text-gray-400'}`}>{s}</span>
                 </div>
                 {i < steps.length - 1 && (
-                  <div className={`w-20 sm:w-32 h-0.5 mx-2 mb-5 transition-all ${i < step ? 'bg-primary' : 'bg-gray-200'}`} />
+                  <div className={`w-10 sm:w-32 h-0.5 mx-1 sm:mx-2 mt-5 transition-all ${i < step ? 'bg-primary' : 'bg-gray-200'}`} />
                 )}
               </div>
             ))}
@@ -115,13 +116,13 @@ export default function Booking() {
                       <div
                         key={pkg._id}
                         onClick={() => setSelected(pkg._id)}
-                        className={`flex items-center gap-4 p-4 rounded-2xl border-2 cursor-pointer transition-all ${selected === pkg._id ? 'border-primary bg-primary/5' : 'border-gray-200 bg-white hover:border-primary/40'}`}
+                        className={`flex items-center gap-4 p-4 rounded-2xl border-2 cursor-pointer transition-all min-w-0 ${selected === pkg._id ? 'border-primary bg-primary/5' : 'border-gray-200 bg-white hover:border-primary/40'}`}
                       >
                         <img src={imageUrl(pkg.image)} onError={handleImageError} alt={pkg.title} className="w-20 h-16 object-cover rounded-xl shrink-0" />
-                        <div>
+                        <div className="min-w-0">
                           <h3 className="font-bold text-gray-900 text-sm">{pkg.title}</h3>
                           <p className="text-xs text-gray-500 mt-0.5">{pkg.duration}</p>
-                          <p className="text-primary font-bold mt-1">${pkg.price} <span className="text-gray-400 font-normal text-xs">/person</span></p>
+                          <p className="text-primary font-bold mt-1">{formatINR(pkg.price)} <span className="text-gray-400 font-normal text-xs">/person</span></p>
                         </div>
                         {selected === pkg._id && (
                           <div className="ml-auto w-6 h-6 rounded-full bg-primary flex items-center justify-center shrink-0">
@@ -142,10 +143,10 @@ export default function Booking() {
 
             {/* Step 1: Traveler Info */}
             {step === 1 && (
-              <div className="step-content bg-white rounded-3xl shadow-md p-8">
+              <div className="step-content bg-white rounded-3xl shadow-md p-5 sm:p-8">
                 <h2 className="text-xl font-bold text-gray-900 mb-6">Traveler Information</h2>
                 <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Full Name *</label>
                       <input name="name" value={form.name} onChange={handle} placeholder="John Doe" className="mt-1.5 w-full border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-primary" />
@@ -159,7 +160,7 @@ export default function Booking() {
                     <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Email *</label>
                     <input name="email" type="email" value={form.email} onChange={handle} placeholder="john@example.com" className="mt-1.5 w-full border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-primary" />
                   </div>
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
                       <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Travel Date</label>
                       <input name="date" type="date" value={form.date} onChange={handle} className="mt-1.5 w-full border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-primary" />
@@ -182,7 +183,7 @@ export default function Booking() {
                     <textarea name="notes" value={form.notes} onChange={handle} rows={3} placeholder="Any dietary needs, room preferences..." className="mt-1.5 w-full border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-primary resize-none" />
                   </div>
                 </div>
-                <div className="flex gap-4 mt-6">
+                <div className="flex flex-col sm:flex-row gap-4 mt-6">
                   <button onClick={() => setStep(0)} className="flex-1 border-2 border-gray-200 text-gray-600 font-semibold py-3 rounded-full hover:border-primary hover:text-primary transition-colors">← Back</button>
                   <button disabled={!form.name || !form.email} onClick={() => setStep(2)} className="flex-1 bg-primary text-white font-semibold py-3 rounded-full hover:bg-primary-dark transition-colors disabled:opacity-40 disabled:cursor-not-allowed">Continue →</button>
                 </div>
@@ -191,21 +192,21 @@ export default function Booking() {
 
             {/* Step 2: Review */}
             {step === 2 && (
-              <div className="step-content bg-white rounded-3xl shadow-md p-8">
+              <div className="step-content bg-white rounded-3xl shadow-md p-5 sm:p-8">
                 <h2 className="text-xl font-bold text-gray-900 mb-6">Review & Confirm</h2>
                 <div className="bg-gray-50 rounded-2xl p-5 mb-6 space-y-3">
-                  <div className="flex justify-between text-sm"><span className="text-gray-500">Package</span><span className="font-semibold text-gray-900">{selectedPkg?.title}</span></div>
-                  <div className="flex justify-between text-sm"><span className="text-gray-500">Duration</span><span className="font-semibold text-gray-900">{selectedPkg?.duration}</span></div>
-                  <div className="flex justify-between text-sm"><span className="text-gray-500">Traveler</span><span className="font-semibold text-gray-900">{form.name}</span></div>
-                  <div className="flex justify-between text-sm"><span className="text-gray-500">Email</span><span className="font-semibold text-gray-900">{form.email}</span></div>
-                  <div className="flex justify-between text-sm"><span className="text-gray-500">Guests</span><span className="font-semibold text-gray-900">{form.adults} Adults, {form.children} Children</span></div>
-                  <div className="flex justify-between text-sm"><span className="text-gray-500">Travel Date</span><span className="font-semibold text-gray-900">{form.date || '—'}</span></div>
-                  <div className="border-t border-gray-200 pt-3 flex justify-between"><span className="font-bold text-gray-900">Total</span><span className="font-bold text-primary text-lg">${(selectedPkg?.price || 0) * Number(form.adults)} <span className="text-sm font-normal text-gray-400">({form.adults} adults)</span></span></div>
+                  <div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm"><span className="text-gray-500">Package</span><span className="font-semibold text-gray-900 break-words">{selectedPkg?.title}</span></div>
+                  <div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm"><span className="text-gray-500">Duration</span><span className="font-semibold text-gray-900">{selectedPkg?.duration}</span></div>
+                  <div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm"><span className="text-gray-500">Traveler</span><span className="font-semibold text-gray-900 break-words">{form.name}</span></div>
+                  <div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm"><span className="text-gray-500">Email</span><span className="font-semibold text-gray-900 break-words">{form.email}</span></div>
+                  <div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm"><span className="text-gray-500">Guests</span><span className="font-semibold text-gray-900">{form.adults} Adults, {form.children} Children</span></div>
+                  <div className="flex flex-col sm:flex-row sm:justify-between gap-1 text-sm"><span className="text-gray-500">Travel Date</span><span className="font-semibold text-gray-900">{form.date || '—'}</span></div>
+                  <div className="border-t border-gray-200 pt-3 flex flex-col sm:flex-row sm:justify-between gap-1"><span className="font-bold text-gray-900">Total</span><span className="font-bold text-primary text-lg">{formatINR((selectedPkg?.price || 0) * Number(form.adults))} <span className="text-sm font-normal text-gray-400">({form.adults} adults)</span></span></div>
                 </div>
                 <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 text-sm text-yellow-800 mb-6">
                   ⚡ Our travel expert will call you within 24 hours to confirm your booking and process payment.
                 </div>
-                <div className="flex gap-4">
+                <div className="flex flex-col sm:flex-row gap-4">
                   <button onClick={() => setStep(1)} className="flex-1 border-2 border-gray-200 text-gray-600 font-semibold py-3 rounded-full hover:border-primary hover:text-primary transition-colors">← Back</button>
                   <button onClick={confirm} disabled={submitting} className="flex-1 bg-green-500 text-white font-semibold py-3 rounded-full hover:bg-green-600 transition-colors disabled:opacity-70 flex items-center justify-center gap-2">
                     <WaIcon className="w-4 h-4" />

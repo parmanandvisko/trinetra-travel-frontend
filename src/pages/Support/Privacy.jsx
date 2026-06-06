@@ -31,10 +31,18 @@ For privacy queries: info@trinetraglobalholidays.com | +91 98924 94688`
 function renderContent(text) {
   if (!text?.trim()) return null
   return text.split('\n').map((line, i) => {
-    if (line.startsWith('## ')) return <h3 key={i} className="text-lg font-bold text-gray-900 mt-8 mb-3 flex items-center gap-2"><span className="w-1 h-5 bg-primary rounded-full inline-block" />{line.replace('## ', '')}</h3>
-    if (line.startsWith('- ')) return <li key={i} className="ml-5 text-gray-600 text-sm leading-relaxed">{line.replace('- ', '')}</li>
+    if (line.startsWith('## ')) return <h3 key={i} className="text-lg font-bold text-gray-900 mt-8 mb-3 flex items-center gap-2"><span className="w-1 h-5 bg-primary rounded-full inline-block" />{formatInline(line.replace('## ', ''))}</h3>
+    if (line.startsWith('- ')) return <li key={i} className="ml-5 text-gray-600 text-sm leading-relaxed">{formatInline(line.replace('- ', ''))}</li>
     if (line.trim() === '') return <div key={i} className="h-2" />
-    return <p key={i} className="text-gray-600 text-sm leading-relaxed pl-3">{line}</p>
+    return <p key={i} className="text-gray-600 text-sm leading-relaxed pl-3">{formatInline(line)}</p>
+  })
+}
+
+function formatInline(text) {
+  return String(text).split(/(\*\*.*?\*\*|\*.*?\*)/g).filter(Boolean).map((part, i) => {
+    if (part.startsWith('**') && part.endsWith('**')) return <strong key={i}>{part.slice(2, -2)}</strong>
+    if (part.startsWith('*') && part.endsWith('*')) return <em key={i}>{part.slice(1, -1)}</em>
+    return <span key={i}>{part}</span>
   })
 }
 

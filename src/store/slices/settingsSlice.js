@@ -45,7 +45,14 @@ const DEFAULT = {
 
 const normalize = (data) => {
   if (!data) return data
-  return { ...data, whatsapp: ['9343088141', '919343088141'].includes(data.whatsapp) ? '919892494688' : data.whatsapp }
+  const businessName = /^trinetra global holid/i.test(data.businessName || '')
+    ? 'Trinetra Global Holidays'
+    : data.businessName
+  return {
+    ...data,
+    businessName,
+    whatsapp: ['9343088141', '919343088141'].includes(data.whatsapp) ? '919892494688' : data.whatsapp,
+  }
 }
 
 const cached = () => {

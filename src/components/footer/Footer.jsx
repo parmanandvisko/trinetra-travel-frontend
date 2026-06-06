@@ -11,7 +11,7 @@ const quickLinks = [
 const supportLinks = [
   { label: 'Payment Details', to: '/payment-details' },
   { label: "FAQ's", to: '/faq' },
-  { label: 'Terms & Conditions', to: '/terms' },
+  { label: 'Terms & Conditions', to: '/terms' }, 
   { label: 'Privacy Policy', to: '/privacy' },
   { label: 'Refund Policy', to: '/refund' },
   { label: 'Travel Insurance', to: '/contact' }, 

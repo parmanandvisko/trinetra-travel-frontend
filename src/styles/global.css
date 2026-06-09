@@ -9,6 +9,38 @@
   --color-gold: 212 160 23;
 }
 
+.quotation-phone-container {
+  width: 100% !important;
+}
+
+.quotation-phone-input {
+  width: 100% !important;
+  height: 48px !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.75rem !important;
+  padding-left: 58px !important;
+  font-family: inherit !important;
+  font-size: 1rem !important;
+}
+
+.quotation-phone-input:focus {
+  border-color: rgb(var(--color-primary)) !important;
+  box-shadow: none !important;
+}
+
+.quotation-phone-button {
+  border: 0 !important;
+  border-right: 1px solid #e5e7eb !important;
+  border-radius: 0.75rem 0 0 0.75rem !important;
+  background: #f9fafb !important;
+}
+
+.quotation-phone-dropdown {
+  width: 320px !important;
+  max-width: calc(100vw - 3rem) !important;
+  border-radius: 0.75rem !important;
+}
+
 @layer base {
   * {
     margin: 0;

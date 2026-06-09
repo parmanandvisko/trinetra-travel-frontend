@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchFeaturedDestinations } from '../../store/slices/destinationsSlice'
 import { imageUrl, handleImageError } from '../../utils/image'
+import api from '../../services/api'
 
 const FALLBACK = [
   { _id: '1', name: 'Passionate-Paris', subtitle: 'France', image: 'https://images.unsplash.com/photo-1778159242389-00f28329cc16?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?w=500&auto=format&fit=crop' },
@@ -18,8 +19,17 @@ export default function TourDestinations() {
   const container = useRef(null)
   const dispatch = useDispatch()
   const { featured, loading } = useSelector((s) => s.destinations)
+  const [holidayDiscount, setHolidayDiscount] = useState(0)
 
   useEffect(() => { dispatch(fetchFeaturedDestinations()) }, [dispatch])
+  useEffect(() => {
+    api.get('/packages?hasDiscount=true&isActive=true&limit=100')
+      .then((res) => {
+        const discounts = (res.data.data || []).map((pkg) => Number(pkg.discount) || 0)
+        setHolidayDiscount(discounts.length ? Math.max(...discounts) : 0)
+      })
+      .catch(() => setHolidayDiscount(0))
+  }, [])
 
   const destinations = featured.length > 0 ? featured : FALLBACK
 
@@ -98,10 +108,10 @@ export default function TourDestinations() {
                 <p className="text-gray-200 text-xs leading-relaxed">Curated holiday packages for a perfect vacation experience.</p>
               </div>
               <div className="flex flex-col items-center gap-2 shrink-0">
-                <span className="w-14 h-14 rounded-full bg-blue-500 flex flex-col items-center justify-center text-white font-bold text-xs leading-tight">
-                  <span className="text-lg font-extrabold">30%</span><span>Off</span>
-                </span>
-                <Link to="/destinations" className="flex items-center gap-1.5 bg-primary text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-primary-dark transition-colors">
+                {holidayDiscount > 0 && <span className="w-14 h-14 rounded-full bg-blue-500 flex flex-col items-center justify-center text-white font-bold text-xs leading-tight">
+                  <span className="text-lg font-extrabold">{holidayDiscount}%</span><span>Off</span>
+                </span>}
+                <Link to="/packages/discounts" className="flex items-center gap-1.5 bg-primary text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-primary-dark transition-colors">
                   See All <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
                 </Link>
               </div>
@@ -119,12 +129,12 @@ export default function TourDestinations() {
                 <p className="text-gray-200 text-xs leading-relaxed">Find the best deals on domestic & international flights.</p>
               </div>
               <div className="flex flex-col items-center gap-2 shrink-0">
-                <span className="w-14 h-14 rounded-full bg-blue-500 flex flex-col items-center justify-center text-white font-bold text-xs leading-tight">
-                  <span className="text-lg font-extrabold">30%</span><span>Off</span>
+                <span className="rounded-full bg-white/90 px-4 py-2 text-xs font-bold uppercase tracking-wide text-gray-700">
+                  Coming Soon
                 </span>
-                <Link to="/booking" className="flex items-center gap-1.5 bg-primary text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-primary-dark transition-colors">
-                  Book Now <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-                </Link>
+                <button type="button" disabled className="cursor-not-allowed rounded-full bg-gray-400 px-4 py-2 text-xs font-semibold text-white opacity-80">
+                  Booking Disabled
+                </button>
               </div>
             </div>
           </div>

@@ -10,6 +10,8 @@ import api from '../../services/api'
 import WaIcon from '../../components/ui/WaIcon'
 import PageHero from '../../components/ui/PageHero'
 import PageWrapper from '../../components/ui/PageWrapper'
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 
 const extractLegacyPackageDetails = (description = '') => {
   const lines = description.split(/\r?\n/).map((line) => line.trim()).filter(Boolean)
@@ -91,9 +93,9 @@ export default function PackageDetail() {
 
   const requestQuotationDownload = async (event) => {
     event.preventDefault()
-    const phone = quotationPhone.replace(/[^\d+]/g, '')
+    const phone = `+${quotationPhone.replace(/\D/g, '')}`
 
-    if (!/^\+?\d{10,15}$/.test(phone)) {
+    if (!/^\+\d{10,15}$/.test(phone)) {
       setQuotationError('Please enter a valid 10 to 15 digit mobile number.')
       return
     }
@@ -106,7 +108,7 @@ export default function PackageDetail() {
         packageId: pkg._id,
         sourceUrl: window.location.href,
       })
-      localStorage.setItem('quotation_phone', phone)
+      localStorage.setItem('quotation_phone', quotationPhone)
       setQuotationModalOpen(false)
       await downloadPackageQuotation({
         pkg,
@@ -282,16 +284,24 @@ export default function PackageDetail() {
               <label htmlFor="quotation-phone" className="mb-1.5 block text-sm font-semibold text-gray-700">
                 Mobile Number
               </label>
-              <input
+              <PhoneInput
                 id="quotation-phone"
-                type="tel"
-                inputMode="tel"
-                autoComplete="tel"
+                country="in"
+                enableSearch
+                searchPlaceholder="Search country"
+                preferredCountries={['in', 'ae', 'us', 'gb']}
                 value={quotationPhone}
-                onChange={(event) => setQuotationPhone(event.target.value)}
-                placeholder="+91 98924 94688"
-                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-gray-900 outline-none transition-colors focus:border-primary"
-                autoFocus
+                onChange={setQuotationPhone}
+                inputProps={{
+                  name: 'quotation-phone',
+                  required: true,
+                  autoFocus: true,
+                  autoComplete: 'tel',
+                }}
+                containerClass="quotation-phone-container"
+                inputClass="quotation-phone-input"
+                buttonClass="quotation-phone-button"
+                dropdownClass="quotation-phone-dropdown"
               />
               {quotationError && <p className="mt-2 text-sm text-red-600">{quotationError}</p>}
               <p className="mt-3 text-xs leading-relaxed text-gray-400">

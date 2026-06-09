@@ -21,6 +21,7 @@ import Terms from '../pages/Support/Terms'
 import Privacy from '../pages/Support/Privacy'
 import Refund from '../pages/Support/Refund'
 import PaymentDetails from '../pages/Support/PaymentDetails'
+import DiscountPackages from '../pages/Domestic/DiscountPackages'
 
 export default function AppRoutes() {
   return (
@@ -50,6 +51,7 @@ export default function AppRoutes() {
           <Route path="/destinations/domestic" element={<Domestic />} />
           <Route path="/destinations/international" element={<International />} />
           <Route path="/packages/:id" element={<PackageDetail />} />
+          <Route path="/packages/discounts" element={<DiscountPackages />} />
           <Route path="/booking" element={<Booking />} />
         </Route>
 

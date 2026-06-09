@@ -1,7 +1,8 @@
 import HeroSection from '../../components/home/HeroSection'
 import TourDestinations from '../../components/home/TourDestinations'
 import WelcomeSection from '../../components/home/WelcomeSection'
-import PopularAdventures from '../../components/home/PopularAdventures'
+// Uncomment when gallery media is ready:
+// import PopularAdventures from '../../components/home/PopularAdventures'
 import PopularDestinationSections from '../../components/home/PopularDestinationSections'
 import Testimonials from '../../components/home/Testimonials'
 import BlogSection from '../../components/home/BlogSection'
@@ -14,7 +15,7 @@ export default function Home() {
       <TourDestinations />
       <PopularDestinationSections />
       <WelcomeSection />
-      <PopularAdventures />
+      {/* Uncomment when gallery media is ready: <PopularAdventures /> */}
       <Testimonials />
       <BlogSection />
       <CTABanner />

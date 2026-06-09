@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useSelector } from 'react-redux'
+import { handleImageError, imageUrl } from '../../utils/image'
 
 const testimonials = [
   { id: 1, name: 'Andre Patil', location: 'Mumbai, India', rating: 5, text: '"The team planned our vacation perfectly! From smooth bookings to amazing experiences, everything was well-organized. Highly recommended for anyone looking for a stress-free trip."', avatar: 'https://picsum.photos/seed/user1/60/60' },
@@ -61,7 +62,7 @@ export default function Testimonials() {
               {items.map((t, i) => (
                 <div key={t.id || i}>
                   <div className="flex items-center gap-4 mb-4">
-                    <img src={t.avatar || t.img} alt={t.name} className="w-12 h-12 rounded-full object-cover border-2 border-gold" />
+                    <img src={imageUrl(t.avatar || t.img)} onError={handleImageError} alt={t.name} className="w-12 h-12 rounded-full object-cover border-2 border-gold" />
                     <div>
                       <p className="font-semibold text-gray-900 text-sm">{t.name}</p>
                       <p className="text-xs text-gray-400">{t.location}</p>

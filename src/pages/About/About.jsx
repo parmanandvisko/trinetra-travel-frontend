@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import PageHero from '../../components/ui/PageHero'
 import PageWrapper from '../../components/ui/PageWrapper'
 import FormattedText from '../../components/ui/FormattedText'
+import { handleImageError, imageUrl } from '../../utils/image'
 
 const STATIC_VALUES = [
   { icon: '🧭', title: 'Expert Guidance', desc: 'Our experienced travel experts craft every trip with precision and personal care.' },
@@ -47,7 +48,7 @@ export default function About() {
         title={s.aboutTitle || 'About Us'}
         subtitle={s.aboutSubtitle || 'Our Story'}
         breadcrumb="About Us"
-        bg="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1600&auto=format&fit=crop"
+        bg={imageUrl(s.aboutImage)}
       />
 
       {/* Mission Section */}
@@ -73,7 +74,8 @@ export default function About() {
             <div className="mission-right relative">
               <div className="rounded-3xl overflow-hidden shadow-2xl h-80 md:h-96">
                 <img
-                  src={s.aboutImage || 'https://images.unsplash.com/photo-1522163182402-834f871fd851?w=700&auto=format&fit=crop'}
+                  src={imageUrl(s.aboutImage)}
+                  onError={handleImageError}
                   alt="About"
                   className="w-full h-full object-cover"
                 />
@@ -115,7 +117,7 @@ export default function About() {
                 <div key={i} className="team-card text-center group">
                   <div className="relative w-28 h-28 mx-auto mb-4 rounded-full overflow-hidden shadow-lg">
                     {member.img ? (
-                      <img src={member.img} alt={member.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                      <img src={imageUrl(member.img)} onError={handleImageError} alt={member.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                     ) : (
                       <div className="w-full h-full bg-primary/10 flex items-center justify-center text-3xl">👤</div>
                     )}

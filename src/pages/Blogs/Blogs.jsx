@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchAllBlogs } from '../../store/slices/blogsSlice'
 import PageHero from '../../components/ui/PageHero'
 import PageWrapper from '../../components/ui/PageWrapper'
+import { handleImageError, imageUrl } from '../../utils/image'
 
 export default function Blogs() {
   const [active, setActive] = useState('All')
@@ -65,7 +66,7 @@ export default function Blogs() {
               filtered.map((blog) => (
                 <div key={blog._id} className="blog-card bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow group">
                   <div className="h-44 overflow-hidden relative">
-                    <img src={blog.image || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=500&auto=format&fit=crop'} alt={blog.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                    <img src={imageUrl(blog.image)} onError={handleImageError} alt={blog.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                     {blog.tags?.length > 0 && (
                       <span className="absolute top-3 left-3 bg-primary text-white text-xs font-semibold px-3 py-1 rounded-full">{blog.tags[0]}</span>
                     )}

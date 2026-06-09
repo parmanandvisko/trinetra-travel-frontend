@@ -2,6 +2,8 @@ import { useState, useRef } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { useSelector } from "react-redux";
+import { imageUrl } from "../../utils/image";
 
 const navLinks = [
   { label: "Home", to: "/" },
@@ -25,6 +27,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const container = useRef(null);
+  const settings = useSelector((state) => state.settings.data);
 
   useGSAP(
     () => {
@@ -53,7 +56,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center shrink-0">
             <img
-              src="/images/logo/trinetralogo.png"
+              src={settings.logoUrl ? imageUrl(settings.logoUrl) : "/images/logo/trinetralogo.png"}
               alt="Trinetra"
               className="h-10 md:h-16 lg:h-24 w-auto object-contain select-none"
               loading="eager"

@@ -4,7 +4,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useSelector } from 'react-redux'
 import api from '../../services/api'
-import { handleImageError } from '../../utils/image'
+import { handleImageError, imageUrl } from '../../utils/image'
 import { formatINR } from '../../utils/currency'
 
 function useDebounce(value, delay) {
@@ -112,7 +112,7 @@ export default function HeroSection() {
       ref={container}
       className="relative min-h-[88vh] flex flex-col items-center justify-center text-white overflow-visible py-10"
       style={{
-        backgroundImage: `url(${s.heroBg || 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&auto=format&fit=crop'})`,
+        backgroundImage: `url(${imageUrl(s.heroBg)})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
@@ -170,7 +170,7 @@ export default function HeroSection() {
           <div className="mt-4 flex items-center justify-center gap-3">
             <div className="flex -space-x-3">
               {s.customerPhotos.slice(0, 4).map((img, i) => (
-                <img key={i} src={img} alt="" className="w-9 h-9 rounded-full object-cover border-2 border-white" />
+                <img key={i} src={imageUrl(img)} onError={handleImageError} alt="" className="w-9 h-9 rounded-full object-cover border-2 border-white" />
               ))}
             </div>
             <span className="text-xs text-white/85">Real traveler memories from recent holidays</span>
@@ -220,7 +220,7 @@ export default function HeroSection() {
                       {results.destinations.map((d) => (
                         <button key={d._id} onClick={() => pick(d, 'destination')} className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-primary/5 transition-colors text-left">
                           <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0">
-                            {d.image ? <img src={d.image} onError={handleImageError} alt={d.name} className="w-full h-full object-cover" /> :
+                            {d.image ? <img src={imageUrl(d.image)} onError={handleImageError} alt={d.name} className="w-full h-full object-cover" /> :
                               <div className="w-full h-full bg-gray-100 flex items-center justify-center text-base">D</div>}
                           </div>
                           <div>
@@ -240,7 +240,7 @@ export default function HeroSection() {
                       {results.packages.map((p) => (
                         <button key={p._id} onClick={() => pick(p, 'package')} className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-primary/5 transition-colors text-left">
                           <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0">
-                            {p.image ? <img src={p.image} onError={handleImageError} alt={p.title} className="w-full h-full object-cover" /> :
+                            {p.image ? <img src={imageUrl(p.image)} onError={handleImageError} alt={p.title} className="w-full h-full object-cover" /> :
                               <div className="w-full h-full bg-gray-100 flex items-center justify-center text-base">P</div>}
                           </div>
                           <div>

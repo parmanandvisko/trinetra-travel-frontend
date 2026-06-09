@@ -38,13 +38,13 @@ export default function CTABanner() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="flex items-center gap-6">
             <div className="cta-badge w-20 h-20 rounded-full bg-gold flex flex-col items-center justify-center text-white shadow-xl shrink-0">
-              <span className="text-2xl font-extrabold leading-none">40%</span>
+              <span className="w-full whitespace-nowrap text-center text-base font-extrabold leading-none tracking-tight">5%-20%</span>
               <span className="text-xs font-semibold">Off</span>
             </div>
             <div className="cta-text">
               <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight">
-                Grab Up To <span className="text-gold">40% Off</span> On<br />
-                Your Favorite Destination
+                Get <span className="text-gold">5% to 20% Off</span> On<br />
+                Your Favorite Holidays
               </h2>
             </div>
           </div>

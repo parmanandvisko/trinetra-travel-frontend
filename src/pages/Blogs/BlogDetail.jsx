@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchAllBlogs } from '../../store/slices/blogsSlice'
 import { openWhatsApp } from '../../utils/whatsapp'
+import { handleImageError, imageUrl } from '../../utils/image'
 import PageHero from '../../components/ui/PageHero'
 import PageWrapper from '../../components/ui/PageWrapper'
 
@@ -53,7 +54,7 @@ export default function BlogDetail() {
         title={blog.title}
         subtitle={blog.tags?.[0] || 'Travel Stories'}
         breadcrumb="Blog"
-        bg={blog.image || 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1600&auto=format&fit=crop'}
+        bg={imageUrl(blog.image)}
       />
 
       <section className="py-14 bg-white">
@@ -82,7 +83,7 @@ export default function BlogDetail() {
               {/* Featured Image */}
               {blog.image && (
                 <div className="rounded-2xl overflow-hidden mb-8 h-64 md:h-80">
-                  <img src={blog.image} alt={blog.title} className="w-full h-full object-cover" />
+                  <img src={imageUrl(blog.image)} onError={handleImageError} alt={blog.title} className="w-full h-full object-cover" />
                 </div>
               )}
 
@@ -129,7 +130,7 @@ export default function BlogDetail() {
                     {related.map((post) => (
                       <Link key={post._id} to={`/blogs/${post._id}`} className="flex gap-3 group">
                         {post.image && (
-                          <img src={post.image} alt={post.title} className="w-16 h-12 rounded-lg object-cover shrink-0" />
+                          <img src={imageUrl(post.image)} onError={handleImageError} alt={post.title} className="w-16 h-12 rounded-lg object-cover shrink-0" />
                         )}
                         <div>
                           <p className="text-xs font-semibold text-gray-900 group-hover:text-primary transition-colors line-clamp-2">{post.title}</p>

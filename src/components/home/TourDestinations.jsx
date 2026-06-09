@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchFeaturedDestinations } from '../../store/slices/destinationsSlice'
 import { imageUrl, handleImageError } from '../../utils/image'
+import { openWhatsApp } from '../../utils/whatsapp'
 import api from '../../services/api'
 
 const FALLBACK = [
@@ -32,6 +33,9 @@ export default function TourDestinations() {
   }, [])
 
   const destinations = featured.length > 0 ? featured : FALLBACK
+  const openFlightBooking = () => openWhatsApp(
+    'Hello Trinetra Global Holidays! I want help booking a domestic or international flight. Please share the best available fares.'
+  )
 
   useGSAP(() => {
     gsap.from('.td-label', {
@@ -119,21 +123,30 @@ export default function TourDestinations() {
           </div>
 
           <div
-            className="td-promo relative rounded-2xl overflow-hidden h-44"
+            className="td-promo group relative h-44 cursor-pointer overflow-hidden rounded-2xl"
             style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=700&auto=format&fit=crop)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+            role="link"
+            tabIndex={0}
+            onClick={openFlightBooking}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault()
+                openFlightBooking()
+              }
+            }}
           >
-            <div className="absolute inset-0 bg-black/40" />
+            <div className="absolute inset-0 bg-black/40 transition-colors group-hover:bg-black/50" />
             <div className="absolute inset-0 flex items-end p-6 gap-4">
               <div className="flex-1">
                 <h3 className="text-white font-bold text-xl mb-1">Flight Bookings</h3>
                 <p className="text-gray-200 text-xs leading-relaxed">Find the best deals on domestic & international flights.</p>
               </div>
               <div className="flex flex-col items-center gap-2 shrink-0">
-                <span className="rounded-full bg-white/90 px-4 py-2 text-xs font-bold uppercase tracking-wide text-gray-700">
-                  Coming Soon
-                </span>
-                <button type="button" disabled className="cursor-not-allowed rounded-full bg-gray-400 px-4 py-2 text-xs font-semibold text-white opacity-80">
-                  Booking Disabled
+                <button type="button" className="flex items-center gap-2 rounded-full bg-green-500 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-green-600">
+                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M20.52 3.48A11.91 11.91 0 0 0 12.04 0C5.44 0 .07 5.37.07 11.97c0 2.11.55 4.17 1.6 5.98L0 24l6.2-1.63a11.93 11.93 0 0 0 5.83 1.48h.01c6.6 0 11.97-5.37 11.97-11.97 0-3.2-1.24-6.18-3.49-8.4Zm-8.48 18.35h-.01a9.9 9.9 0 0 1-5.05-1.38l-.36-.21-3.68.97.98-3.59-.23-.37a9.91 9.91 0 1 1 8.35 4.58Zm5.43-7.43c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47a8.91 8.91 0 0 1-1.65-2.05c-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.19 1.87.12.57-.09 1.76-.72 2.01-1.42.25-.7.25-1.29.17-1.42-.07-.12-.27-.2-.57-.35Z" />
+                  </svg>
+                  Flight Booking
                 </button>
               </div>
             </div>

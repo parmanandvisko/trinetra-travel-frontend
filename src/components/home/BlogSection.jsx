@@ -5,6 +5,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchRecentBlogs } from '../../store/slices/blogsSlice'
+import { handleImageError, imageUrl } from '../../utils/image'
 
 const FALLBACK = [
   { _id: '1', title: 'The Ultimate Guide to Traveling', excerpt: 'Discover expert tips, top destinations, budget hacks, and everything you need for a perfect trip.', createdAt: '2025-05-20', image: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=500&auto=format&fit=crop', author: 'Admin' },
@@ -56,7 +57,7 @@ export default function BlogSection() {
             blogs.map((blog) => (
               <div key={blog._id} className="bs-card bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
                 <div className="h-44 overflow-hidden">
-                  <img src={blog.image || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=500&auto=format&fit=crop'} alt={blog.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <img src={imageUrl(blog.image)} onError={handleImageError} alt={blog.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                 </div>
                 <div className="p-4">
                   <div className="flex items-center gap-3 mb-3">

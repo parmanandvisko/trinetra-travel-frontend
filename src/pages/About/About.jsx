@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 import PageHero from '../../components/ui/PageHero'
 import PageWrapper from '../../components/ui/PageWrapper'
 import FormattedText from '../../components/ui/FormattedText'
-import { handleImageError, imageUrl } from '../../utils/image'
+import { ABOUT_FALLBACK_IMAGE, handleImageError, imageUrl } from '../../utils/image'
 
 const STATIC_VALUES = [
   { icon: '🧭', title: 'Expert Guidance', desc: 'Our experienced travel experts craft every trip with precision and personal care.' },
@@ -48,7 +48,7 @@ export default function About() {
         title={s.aboutTitle || 'About Us'}
         subtitle={s.aboutSubtitle || 'Our Story'}
         breadcrumb="About Us"
-        bg={imageUrl(s.aboutImage)}
+        bg={imageUrl(s.aboutImage, ABOUT_FALLBACK_IMAGE)}
       />
 
       {/* Mission Section */}
@@ -74,8 +74,8 @@ export default function About() {
             <div className="mission-right relative">
               <div className="rounded-3xl overflow-hidden shadow-2xl h-80 md:h-96">
                 <img
-                  src={imageUrl(s.aboutImage)}
-                  onError={handleImageError}
+                  src={imageUrl(s.aboutImage, ABOUT_FALLBACK_IMAGE)}
+                  onError={(event) => handleImageError(event, ABOUT_FALLBACK_IMAGE)}
                   alt="About"
                   className="w-full h-full object-cover"
                 />

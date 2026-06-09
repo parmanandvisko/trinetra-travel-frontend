@@ -57,6 +57,7 @@ export default function Navbar() {
           <Link to="/" className="flex items-center shrink-0">
             <img
               src={settings.logoUrl ? imageUrl(settings.logoUrl) : "/images/logo/trinetralogo.png"}
+              onError={(event) => { event.currentTarget.src = "/images/logo/trinetralogo.png" }}
               alt="Trinetra"
               className="h-10 md:h-16 lg:h-24 w-auto object-contain select-none"
               loading="eager"

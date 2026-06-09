@@ -38,7 +38,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-1">
             <Link to="/" aria-label="Go to home page" className="inline-block mb-4">
-              <img src={s.logoUrl ? imageUrl(s.logoUrl) : '/images/logo/trinetralogo.png'} alt={s.businessName} className="h-20 w-auto object-contain" />
+              <img src={s.logoUrl ? imageUrl(s.logoUrl) : '/images/logo/trinetralogo.png'} onError={(event) => { event.currentTarget.src = '/images/logo/trinetralogo.png' }} alt={s.businessName} className="h-20 w-auto object-contain" />
             </Link>
             <p className="text-sm text-gray-500 leading-relaxed mb-5">{s.tagline}</p>
             {socials.length > 0 && (

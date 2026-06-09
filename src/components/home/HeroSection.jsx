@@ -4,7 +4,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useSelector } from 'react-redux'
 import api from '../../services/api'
-import { handleImageError, imageUrl } from '../../utils/image'
+import { handleImageError, HERO_FALLBACK_IMAGE, imageUrl } from '../../utils/image'
 import { formatINR } from '../../utils/currency'
 
 function useDebounce(value, delay) {
@@ -112,7 +112,7 @@ export default function HeroSection() {
       ref={container}
       className="relative min-h-[88vh] flex flex-col items-center justify-center text-white overflow-visible py-10"
       style={{
-        backgroundImage: `url(${imageUrl(s.heroBg)})`,
+        backgroundImage: `url(${imageUrl(s.heroBg, HERO_FALLBACK_IMAGE)}), url(${HERO_FALLBACK_IMAGE})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
